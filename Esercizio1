@@ -23,7 +23,7 @@ int main()
     printf("|Numero di caratteri: %d\n",printf("Intero senza segno| Valore: %8d |Byte: %d |Valore Min: %13d | Valore Max: %14u\t",intNoSegno, sizeof(unsigned int), 0, UINT_MAX));
     printf("|Numero di caratteri: %d\n",printf("Intero con segno  | Valore: %8d |Byte: %d |Valore Min: %13d | Valore Max: %14d\t",intSegno, sizeof(signed int), INT_MIN, INT_MAX));
     printf("|Numero di caratteri: %d\n",printf("Intero short      | Valore: %08d |Byte: %d |Valore Min: %13d | Valore Max: %14d\t",intShort, sizeof(short int), SHRT_MIN, SHRT_MAX)); //Sostituzione degli spazi con 0
-    printf("|Numero di caratteri: %d\n",printf("Intero long       | Valore: %8ld |Byte: %d |Valore Min: %13ld | Valore Max: %14ld\t",intLong, sizeof(long int), LONG_MIN, LONG_MAX)); //Modificatore di lunghezza per indicare che la variabile è long
+    printf("|Numero di caratteri: %d\n",printf("Intero long       | Valore: %8ld |Byte: %d |Valore Min: %13ld | Valore Max: %14ld\t",intLong, sizeof(long int), LONG_MIN, LONG_MAX)); //Modificatore di lunghezza per indicare che la variabile Ã¨ long
     printf("|Numero di caratteri: %d\n",printf("Float             | Valore: %-8.4f |Byte: %d |Valore Min: %13e | Valore Max: %14e\t",precisioneSingola, sizeof(float), FLT_MIN, FLT_MAX)); //Allineamento a sinistra, campoMinimo e precisione
     printf("|Numero di caratteri: %d\n",printf("Double            | Valore: %-8.4f |Byte: %d |Valore Min: %13e | Valore Max: %14e\t",precisioneDoppia, sizeof(double), DBL_MIN, DBL_MAX)); //Allineamento a sinistra, campoMinimo e precisione
     printf("|Numero di caratteri: %d\n",printf("Char              | Valore: %8c |Byte: %d |Valore Min: %13d | Valore Max: %14d\t",carattere, sizeof(char),CHAR_MIN, CHAR_MAX));
