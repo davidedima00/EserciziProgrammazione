@@ -1,24 +1,92 @@
-//Author: Filippo Venturini
-//Date(Deadline): 20191013
+//Author: Davide Di marco | Filippo Venturini | Riccardo Leonelli
+//Date(Deadline): 13-10-2019
 //Notes: Esercizio 2
 #include <stdio.h>
 #include <stdlib.h>
 
 int main()
 {
+    /*Utilizzo degli operatori aritmetici*/
+    int a=10;
+    int b=5;
+    float c=2.1678;
+    printf("----------Operatori Aritmetici----------\n");
+    printf("a=%d,b=%d,c=%f\n",a,b,c);
+    printf("Operatore: + ->  %d+%d=%d\n",a,b,a+b); //addizione
+    printf("Operatore: - ->  %d-%d=%d\n",a,b,a-b); //sottrazione
+    printf("Operatore: / ->  %d/%d=%d\n",a,b,a/b); //divisione, vale anche per i float e il segno del risultato è
+    printf("Operatore: * ->  %d*%d=%d\n",a,b,a*b); //moltiplicazione
+    printf("Operatore: %% ->  %d%%%d=%d\n",a,b,a%b); //modulo della divisione
+    printf("Operatore: ++a (Incremento e assegnazione) -> %d \n",++a); //incrementa a e assegna ad a il valore incrementato
+    printf("Operatore: --a (Decremento e assegnazione) -> %d \n",--a); //decrementa a e assegna ad a il valore decrementato
+    printf("Operatore: a++ (assegnazione e incremento) -> %d \n",a++);
+    printf("Operatore: a-- (assegnazione e decremento) -> %d \n",a--);
+    printf("\n----------Operatori compatti----------\n");
+    printf("Operatore: += -> a+=2 = %d \n",a+=2); //assegna ad a il valore di a+2
+    printf("Operatore: -= -> a-=2 = %d \n",a-=2); //assegna ad a il valore a-2
+    printf("Operatore: *= -> a*=2 = %d \n",a*=2); //assegna ad a il valore di a*2
+    printf("Operatore: /= -> a/=2 = %d \n",a/=2); //assegna ad a il valore di a/2
+    printf("Operatore: %%= -> a%%=2 = %d \n",a%=2); //assegna ad a il valore di a%2 (resto della divisione a/)
+
+    /* Utilizzo degli operatori relazionali e logici tramite costrutto if */
+    printf("\n----------Operatori AND, >, <, >=, <=, ==----------\n");
+    int temp=1000;
+
+    if (temp>-100 && temp<100 ){
+        if (temp>=0 && temp<=3){
+            printf("Pericolo ghiaccio!\n");
+        }
+        else if (temp>3 && temp!=50)
+        {
+            printf("No pericolo ghiaccio!\n");
+        }
+        else if (temp==50){
+            printf("Sei nel deserto del Sahara");
+        }
+    }
+    else
+    {
+       printf("Temperatura non valida\n");
+    }
+
+    //PROVA OPERATORE OR
+    printf("\n----------Operatore OR----------\n");
+    char carattere='a';
+    if (carattere=='a' || carattere=='e' || carattere=='i' || carattere=='o' || carattere=='u'){ //se è la lettera a,e,i,o,u allora
+        printf("Il carattere e\' una vocale\n");
+    }
+
+    //PROVA OPERATORE NOT
+    printf("\n----------Operatore NOT----------\n");
+    int opNOT=1;
+    printf("%d\n",opNOT);
+    opNOT=!opNOT;
+    printf("%d\n",opNOT);
+    //PROVO AD ASSEGNARE UN VALORE TROPPO ALTO AD UNA VARIABILE DI TIPO INT
+    printf("\n----------Overflow----------\n");
+    int valueInt=9999999999999999999; //overflow, il comportamento è indefinito
+    printf("Valore della variabile (Errato): %d\n",valueInt);
+    //Assegno ad una variabile char un numero con la virgola
+    printf("\n----------Assegnamento di un tipo non appropriato----------\n");
+    char valueChar= 1.254;
+    printf("Valore della variabile char (Errato): %c\n",valueChar);
+
+    //Side effects
+    printf("\n----------Side effects----------\n");
+    int p = 3;
+    int x = p*p++; //Sia l'assegnamento che il post-incremento hanno side effects e provocano un risultato indefinito
+    printf("Valore di x indefinito: x = %d\n", x);
+
     //Conversione implicita
-    float f = 3.123;
-    int i = f; //Assegna ad una variabile intera un valore float
-    printf("APPLICAZIONE DELLA CONVERSIONE IMPLICITA:\n");
-    printf("f = %f,\ni = f,\nValore di i: %d.\n\n",f,i); //Print del risultato
+    printf("\n----------Conversione Implicita----------\n");
+    int numInt = 50;
+    double numDouble = numInt; //Assegnamento di un valore intero ad una variabile double
+    printf("Valore int automaticamente convertito in double e assegnato:\nnumInt = %d, numDouble = %e\n\n",numInt, numDouble); //Print dei risultati
 
-    //Superamento del range di memorizzazione
-    printf("SUPERAMENTO DEL RANGE DI MEMORIZZAZIONE:\n");
-    short incassiGiugno = 25000;
-    short incassiLuglio = 30000;
-    short incassiAgosto = 31000;
-    short incassiEstivi = incassiGiugno + incassiLuglio + incassiAgosto;
-    printf("Incassi Giugno: %d;\nIncassi Luglio: %d;\nIncassi Agosto: %d;\nIncassi Estivi(Giugno+Luglio+Agosto): %d. ",incassiGiugno,incassiLuglio,incassiAgosto,incassiEstivi);
+    float numFloat = (float)numInt; //Casting di numInt in float
+    printf("Valore int convertito in float con un cast:\nnumFloat = %f", numFloat);
 
+
+    getchar();
     return 0;
 }
