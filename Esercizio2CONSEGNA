@@ -3,6 +3,7 @@
 //Notes: Esercizio 2
 #include <stdio.h>
 #include <stdlib.h>
+#include<math.h>
 
 int main()
 {
@@ -84,9 +85,27 @@ int main()
     printf("Valore int automaticamente convertito in double e assegnato:\nnumInt = %d, numDouble = %e\n\n",numInt, numDouble); //Print dei risultati
 
     float numFloat = (float)numInt; //Casting di numInt in float
-    printf("Valore int convertito in float con un cast:\nnumFloat = %f", numFloat);
+    printf("Valore int convertito in float con un cast:\nnumFloat = %f\n", numFloat);
 
+    //Tutte le funzioni della libreria math.h
+    printf("\n----------Funzioni di math.h----------\n");
+
+    double g1=60,g2=30,n1=3.101010101,n2=63.12121212; //Dichiarazione delle variabili utilizzate
+
+    g1=g1/360*2*M_PI; //trasformazione i gradi in radianti
+    g2=g2/360*2*M_PI;
+    printf("| L' angolo g1 vale: %f gradi |\n| L' angolo g2 vale: %f gradi |\n| Il numero n1 vale: %-14f |\n| Il numero n2 vale: %-14f |\n\n",g1,g2,n1,n2);//print delle variabili che verranno utilizzate dagli elementi della libreria <maths.h>
+    printf("| sin   => valore: %-7.3f | cos  => valore: %-7.3f | tang => valore: %-7.3f |\n",sin(g1),cos(g1),tan(g1));
+    printf("| asin  => valore: %-7.3f | acos => valore: %-7.3f | atan => valore: %-7.3f |\n",asin(sin(g1)),acos(cos(g1)),atan(tan(g1)));
+    printf("| sinh  => valore: %-7.3f | cosh => valore: %-7.3f | tanh => valore: %-7.3f |\n",sinh(g1),cosh(g1),tanh(g1));
+    printf("| atan2 => valore: %-7.3f |\n\n",atan2(g1,g2));
+
+    printf("| exp   => valore: %-7.3f | log  => valore: %-7.3f | log10 => valore: %-6.3f |\n",exp(n1),log(n1),log10(n1));
+    printf("| ceil  => valore: %-7.3f | fabs => valore: %-7.3f | floor => valore: %-6.3f |\n",ceil(n1),fabs(n1),floor(n1));
+    //printf("| fmod  => valore: %-7.3f | frexp=> valore: %-7.3f | ldexp => valore: %-6.3f |\n",fmod(n1,n2),frexp(n1,2),ldexp(n1,2));
+    //printf("| modf  => valore: %-7.3f | pow  => valore: %-7.3f | sqrt  => valore: %-6.3  |\n",modf(n1,n2),pow(n1,n2),sqrt(n1));
 
     getchar();
     return 0;
 }
+
