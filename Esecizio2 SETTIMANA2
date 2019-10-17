@@ -6,42 +6,50 @@
 
 int main()
 {
-    int min = 0, max = 0;
-    char risposta = ' ';
-
+    char rigioca;
     do{
-        printf("\t\tInserisci il range di valori per il random [min-max]: ");
-        scanf("%d-%d",&min,&max);
-        fflush(stdin);//Pulizia del buffer
-
-        if(min >= max) //Se il valore mi è > di max i valori sono errati
-            printf("VALORI ERRATI!\n");
-    }while(min >= max);
-
-    printf("\n\t\t\tPensa ad un numero tra %d e %d.\n\n",min,max);
-
-    while (risposta != '='){
-        int rnd = (rand() % (max - min + 1)) + min; //Generazione di un numero random
+        system("cls");
+        int min = 0, max = 0;
+        char risposta = ' ';
 
         do{
-            printf("\t\t|Il numero pensato e' [=], [<] o [>] di %d?:", rnd);
-            scanf("%c", &risposta);
-            fflush(stdin); //Pulizia del buffer
-        }while(risposta != '<' && risposta != '>' && risposta != '='); //Ciclo per forzare la risposta dell'utente ai caratteri : < > =
+            printf("\t\tInserisci il range di valori per il random [min-max]: ");
+            scanf("%d-%d",&min,&max);
+            fflush(stdin);//Pulizia del buffer
 
-        if(risposta == '>'){
-            min = rnd + 1;
+            if(min >= max) //Se il valore mi è > di max i valori sono errati
+                printf("VALORI ERRATI!\n");
+        }while(min >= max);
+
+        printf("\n\t\t\tPensa ad un numero tra %d e %d.\n\n",min,max);
+
+        while (risposta != '='){
+            int rnd = (rand() % (max - min + 1)) + min; //Generazione di un numero random
+
+            do{
+                printf("\t\t|Il numero pensato e' [=], [<] o [>] di %d?:", rnd);
+                scanf("%c", &risposta);
+                fflush(stdin); //Pulizia del buffer
+            }while(risposta != '<' && risposta != '>' && risposta != '='); //Ciclo per forzare la risposta dell'utente ai caratteri : < > =
+
+            if(risposta == '>'){
+                min = rnd + 1;
+            }
+            else if(risposta == '<'){
+                max = rnd - 1;
+            }
+            else if(risposta == '='){
+                printf("\n\n\t\t\t######################");
+                printf("\n\t\t\t##HO INDOVINATO!    ##"); //Print quando il numero è stato indovinato
+                printf("\n\t\t\t##Il numero e': %d.##", rnd);
+                printf("\n\t\t\t######################");
+            }
         }
-        else if(risposta == '<'){
-            max = rnd - 1;
-        }
-        else if(risposta == '='){
-            printf("\n\n\t\t\t######################");
-            printf("\n\t\t\t##HO INDOVINATO!    ##"); //Print quando il numero è stato indovinato
-            printf("\n\t\t\t##Il numero e': %d.##", rnd);
-            printf("\n\t\t\t######################");
-        }
-    }
+
+        printf("\n\nVuoi rigiocare? [s/n]: ");
+        scanf("%[sn]", &rigioca);
+        fflush(stdin);
+    }while(rigioca == 's');
     getchar();
     return 0;
 }
