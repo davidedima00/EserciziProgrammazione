@@ -52,32 +52,40 @@ int main() {
                     casellaLibera = false;
                     break;
                 }
-                else
+                else{
                     --Riga;
+                    casellaLibera = true;
+                }
                 break;
             case DESTRA:
                 if (campo[Riga][Colonna+1] != '-' || Colonna + 1 >= MAX) { //Controlla che la casella non sia occupata e che non esca dai limiti
                     casellaLibera = false;
                     break;
                 }
-                else
-                    ++Colonna;
+                else{
+                   ++Colonna;
+                   casellaLibera = true;
+                }
                 break;
             case GIU:
                 if (campo[Riga+1][Colonna] != '-' || Riga + 1 >= MAX) { //Controlla che la casella non sia occupata e che non esca dai limiti
                     casellaLibera = false;
                     break;
                 }
-                else
+                else{
                     ++Riga;
+                    casellaLibera = true;
+                }
                 break;
             case SINISTRA:
                 if (campo[Riga][Colonna-1] != '-' || Colonna-1 < 0) { //Controlla che la casella non sia occupata e che non esca dai limiti
                     casellaLibera = false;
                     break;
                 }
-                else
+                else{
                     --Colonna;
+                    casellaLibera = true;
+                }
                 break;
 		}
 		if (!casellaLibera) {
@@ -89,21 +97,20 @@ int main() {
 
 		campo[Riga][Colonna] = alfabeto[indiceAlfabeto]; //Assegna la lettera
 		caselleOccupate = 0; //Se cambia casella le caselle occupate vengono azzerate
-		casellaLibera = true;
 		contEstratti = 0; //Azzeramento del contatore
 		//Ciclo per azzerare il vettore che memorizza le direzioni estratte
 		for(int i = 0; i < 3; i++){
             direzioniEstratte[i] = 0;
 		}
 		indiceAlfabeto++; //Incrementa l'indice dell'alfabeto
-	}
 
-	//Cicli per il print del campo di gioco
-	for (int r = 0; r < MAX; r++) {
-		for (int c = 0; c < MAX; c++) {
-			printf("%c", campo[r][c]); //Printa il carattere
-		}
-		printf("\n"); //Va a capo alla fine della riga
 	}
-	getchar();
+	//Cicli per il print del campo di gioco
+        for (int r = 0; r < MAX; r++) {
+            for (int c = 0; c < MAX; c++) {
+                printf("%c", campo[r][c]); //Printa il carattere
+            }
+            printf("\n"); //Va a capo alla fine della riga
+        }
+        getchar();
 }
