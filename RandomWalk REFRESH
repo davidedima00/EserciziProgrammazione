@@ -1,0 +1,130 @@
+//Author: Filippo Venturini
+//Date(DeadLine): 10112019
+//Notes: RandomWalk
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <stdbool.h> //Per l'utilizzo dei booleani
+#include <windows.h>
+#define MAX 10
+#define SU 1
+#define DESTRA 2
+#define GIU 3
+#define SINISTRA 4
+
+int main() {
+	system("color A");
+	char campo[MAX][MAX]; //Crea la matrice
+	char alfabeto[] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','\0' }; //Array per le lettere dell'alfabeto
+	bool fine = false;
+	bool casellaLibera = true; //Booleano per la disponibilità della casella
+	int caselleOccupate = 0; //Contatore delle caselle occupate
+	int rndDirezione = 0; //Random per la direzione
+	int indiceAlfabeto = 0;
+	int direzioniEstratte[] = { 0,0,0 }; //Vettore per la memorizzazione delle direzioni estratte
+	int contEstratti = 0; //Contatore per il vettore dei numeri estratti
+
+	for (int r = 0; r < MAX; r++) { //Cicli per l'inizializzazione
+		for (int c = 0; c < MAX; c++) {
+			campo[r][c] = '.';  //Inizializza il campo			
+		}
+	}
+
+	srand(time(NULL)); //Generazione di un seed random con la libreria time
+	int Riga = (rand() % (9 - 0 + 1)) + 0; //Generazione di un numero random per la riga
+	int Colonna = (rand() % (9 - 0 + 1)) + 0; //Generazione di un numero random per la colonna
+
+	campo[Riga][Colonna] = alfabeto[indiceAlfabeto]; //Inserisce la prima lettera dell'alfabeto in una posizione random
+	indiceAlfabeto++; //Incrementa l'indice
+
+	while (fine == false) {
+		if (alfabeto[indiceAlfabeto] == '\0')
+			break;
+
+		//Ciclo per controllare che la direzione che viene estratta non sia già stata utilizzata
+		do {
+			rndDirezione = (rand() % (4 - 1 + 1)) + 1; //Genera la direzione random
+		} while (rndDirezione == direzioniEstratte[0] || rndDirezione == direzioniEstratte[1] || rndDirezione == direzioniEstratte[2]);
+
+		direzioniEstratte[contEstratti] = rndDirezione; //Inserimento della direzione estratta nel vettore
+		contEstratti++; //incremento del contatore
+
+		switch (rndDirezione)
+		{
+		case SU:
+			if (campo[Riga - 1][Colonna] != '.' || Riga - 1 < 0) { //Controlla che la casella non sia occupata e che non esca dai limiti
+				casellaLibera = false;
+				break;
+			}
+			else {
+				--Riga;
+				casellaLibera = true;
+			}
+			break;
+		case DESTRA:
+			if (campo[Riga][Colonna + 1] != '.' || Colonna + 1 >= MAX) { //Controlla che la casella non sia occupata e che non esca dai limiti
+				casellaLibera = false;
+				break;
+			}
+			else {
+				++Colonna;
+				casellaLibera = true;
+			}
+			break;
+		case GIU:
+			if (campo[Riga + 1][Colonna] != '.' || Riga + 1 >= MAX) { //Controlla che la casella non sia occupata e che non esca dai limiti
+				casellaLibera = false;
+				break;
+			}
+			else {
+				++Riga;
+				casellaLibera = true;
+			}
+			break;
+		case SINISTRA:
+			if (campo[Riga][Colonna - 1] != '.' || Colonna - 1 < 0) { //Controlla che la casella non sia occupata e che non esca dai limiti
+				casellaLibera = false;
+				break;
+			}
+			else {
+				--Colonna;
+				casellaLibera = true;
+			}
+			break;
+		}
+		if (!casellaLibera) {
+			++caselleOccupate; //Incrementa il numero di caselle occupate
+			if (caselleOccupate == 4)
+				fine = true; //Se sono occupate tutte e 4 finisce il gioco
+			continue; //Continua fino alla fine del ciclo
+		}
+
+		campo[Riga][Colonna] = alfabeto[indiceAlfabeto]; //Assegna la lettera
+		caselleOccupate = 0; //Se cambia casella le caselle occupate vengono azzerate
+		contEstratti = 0; //Azzeramento del contatore
+						  //Ciclo per azzerare il vettore che memorizza le direzioni estratte
+		for (int i = 0; i < 3; i++) {
+			direzioniEstratte[i] = 0;
+		}
+		indiceAlfabeto++; //Incrementa l'indice dell'alfabeto
+
+		system("cls");
+
+		printf("\n\n\t\t\t\t");
+		//Cicli per il print del campo di gioco
+		for (int r = 0; r < MAX; r++) {
+			for (int c = 0; c < MAX; c++) {
+				printf("|%c| ", campo[r][c]); //Printa il carattere
+			}
+			printf("\n\t\t\t\t"); //Va a capo alla fine della riga
+		}
+		
+		clock_t start_time = clock();
+		// looping till required time is not acheived 
+		while (clock() < start_time+400)
+			;		
+	}
+	
+	getchar();
+	fflush(stdin);
+}
