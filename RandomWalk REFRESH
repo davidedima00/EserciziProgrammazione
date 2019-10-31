@@ -125,6 +125,10 @@ int main() {
 			;		
 	}
 	
+	if (alfabeto[indiceAlfabeto] == '\0') {
+		printf("Snake HA VINTO!\n");
+	}
+	else
+		printf("Snake HA PERSO!");
 	getchar();
-	fflush(stdin);
 }
