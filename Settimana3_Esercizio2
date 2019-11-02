@@ -102,7 +102,9 @@ int main() {
 	int carSaltati = 0; //Contatore per memorizzare i caratteri che non vengono momentaneamente inseriti
 	//Ciclo di controllo per la sostituzione con *
 	for (int ip1 = 0; ip1 <= iFineParola1; ip1++) {
-		if (p1[ip1] == p2[ip2]) {    //Se i due caratteri sono uguali
+
+		//Se i due caratteri sono uguali
+		if (p1[ip1] == p2[ip2]) {    
 			if (ip2 == iFineParola2) { //Controlla che la seconda parola sia finita o meno
 				tmp[itmp] = '*';  //Se è finita sostituisce con *
 				++itmp; //Inctrementa l'indice per lo scorrimento dell'array
@@ -118,7 +120,9 @@ int main() {
 				}	
 			}		
 		}
-		else { //Se i due caratteri sono diversi
+
+		//Se i due caratteri sono diversi
+		else { 
 			if (carSaltati != 0) {  //Se ci sono dei caratteri saltati
 				for (int i = ip1 - carSaltati; i <= ip1; i++) { //Ciclo che prende gli ultimi n caratteri saltati e li inserisce nel vettore
 					tmp[itmp] = p1[i];
