@@ -110,8 +110,12 @@ int main() {
 				carSaltati = 0; //Azzera il contatore dei caratteri saltati
 			}
 			else {
-				++ip2; //Altrimenti incrementa l'indice per lo scorrimento della seconda parola
-				++carSaltati; //Incrementa il contatore dei caratteri saltati
+				if (ip1 == iFineParola1) //Se i caratteri sono uguali e il carattere è l'ultimo della prima parola
+					tmp[itmp] = p1[ip1]; //Viene inderito automaticamente nell'array
+				else {
+					++ip2; //Altrimenti incrementa l'indice per lo scorrimento della seconda parola
+					++carSaltati; //Incrementa il contatore dei caratteri saltati
+				}	
 			}		
 		}
 		else { //Se i due caratteri sono diversi
