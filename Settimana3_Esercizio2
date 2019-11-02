@@ -136,6 +136,15 @@ int main() {
 			}
 		}
 	}
-	printf("%s   %s\n %s", p1, p2,tmp);
+
+	//Stampa della stringa finale
+	printf("Stringa finale: ");
+	for (int i = 0; i <= MAX; i++) {
+		if (tmp[i] == ' ') //Appena incontra uno spazio termina il ciclo
+			break;
+		else
+			printf("%c", tmp[i]);
+	}
+	
 	getchar();
 }
