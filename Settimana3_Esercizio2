@@ -1,0 +1,118 @@
+//Author: Filippo Venturini
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#define MAX 30 //Dimensione massima degli array
+
+int main() {
+	//PRIMA VERSIONE SENZA L'UTILIZZO DI STRING.H
+	char p1[MAX+1];
+	char p2[MAX+1];
+	char c1 = ' ';
+	char c2 = ' ';
+	bool spazio = false; //Variabile per verificare la presenza di uno spazio
+
+	//Ciclo per inizializzare il primo array
+	for (int i = 0; i < MAX + 1; i++) {		
+		if (i == MAX) {
+			p1[i] = '\0'; //Alla fine degli array aggiunge il terminatore
+		}
+		else {
+			p1[i] = ' '; //Inizializza gli arrayu con degli spazi bianchi
+		}
+	}
+	printf("Inserire la prima parola: ");
+
+	//Il ciclo consuma tutta la stringa fino a che non trova un \n o l'indice raggiunge max
+	//Appena trova uno spazio consuma la stringa senza inserire i valori nell'array
+	for (int i = 0;(c1 = getchar()) != '\n'; i++) {
+		if (c1 == ' ') {
+			spazio = true;
+		}		
+		if(!spazio)
+			p1[i] = c1;		
+		if (i >= MAX)
+			break;
+	}
+
+	int iFineParola1 = 0; //Per la memorizzazione dell'indice finale della prima parola
+	//Ciclo per individuare la fine della prima parola
+	for (int i = 0; i < MAX; i++) {
+		if (p1[i] == ' ') {
+			iFineParola1 = i - 1; //Memorizza l'indice in cui finisce la prima parola
+			break; //Una volta trovata esce dal ciclo
+		}
+	}
+
+	int iFineParola2; //Per la memorizzazione dell'indice finale della seconda parola
+	do {
+		spazio = false; //Setta la variabile di nuovo a false  per il secondo ciclo
+		iFineParola2 = 0;
+
+		//Ciclo per inizializzare il secondo array
+		for (int i = 0; i < MAX + 1; i++) {
+			if (i == MAX) {
+				p2[i] = '\0'; //Alla fine degli array aggiunge il terminatore
+			}
+			else {
+				p2[i] = ' '; //Inizializza gli arrayu con degli spazi bianchi
+			}
+		}
+
+		printf("Inserire la seconda parola: ");
+		for (int i = 0; (c2 = getchar()) != '\n'; i++) {
+			if (c2 == ' ') {
+				spazio = true;
+			}
+			if (!spazio)
+				p2[i] = c2;
+			if (i >= MAX)
+				break;
+		}
+
+		//Ciclo per individuare la fine della seconda parola
+		for (int i = 0; i < MAX; i++) {
+			if (p2[i] == ' ') {
+				iFineParola2 = i - 1; //Memorizza l'indice in cui finisce la seconda parola
+				break; //Una volta trovata esce dal ciclo
+			}
+		}
+		if (iFineParola2 > iFineParola1) 
+			printf("LA SECONDA PAROLA NON PUO' ESSERE PIU' LUNGA DELLA PRIMA!\n");
+	} while (iFineParola2 > iFineParola1);
+
+	int ip2 = 0; //Indice per lo scorrimento della seconda parola
+	int itmp = 0; //Indice per lo scorrimento dell'array tmp
+	char tmp[MAX + 1];//Creazione dell'array temporaneo
+
+	//Ciclo per l'inizializzazione dell'array temporaneo 
+	for (int i = 0; i < MAX + 1; i++) {
+		if (i == MAX) {
+			tmp[i] = '\0'; //Alla fine degli array aggiunge il terminatore
+		}
+		else {
+			tmp[i] = ' '; //Inizializza gli array con degli spazi bianchi
+		}
+	}
+
+	//Ciclo di controllo per la sostituzione con *
+	for (int ip1 = 0; ip1 <= iFineParola1; ip1++) {
+		if (p1[ip1] == p2[ip2]) {    //Se i due caratteri sono uguali
+			if (ip2 == iFineParola2) { //Controlla che la seconda parola sia finita o meno
+				tmp[itmp] = '*';  //Se è finita sostituisce con *
+				++itmp; //Inctrementa l'indice per lo scorrimento dell'array
+				ip2 = 0; //Azzera l'indice di scorrimento della seconda parola
+			}
+			else {
+				++ip2; //Altrimenti incrementa l'indice per lo scorrimento della seconda parola
+			}		
+		}
+		else { //Se i due caratteri sono diversi
+			tmp[itmp] = p1[ip1]; //Inserisce il carattere nel vettore temporaneo
+			++itmp; //Inctrementa l'indice per lo scorrimento dell'array
+		}
+	}
+	printf("%s   %s\n %s", p1, p2,tmp);
+	getchar();
+}
