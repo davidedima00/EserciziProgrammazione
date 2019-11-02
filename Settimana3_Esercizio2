@@ -1,4 +1,6 @@
 //Author: Filippo Venturini
+//Date(DeadLine): 20191110
+//Notes: Esercizio 2
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,6 +15,7 @@ int main() {
 	char c2 = ' ';
 	bool spazio = false; //Variabile per verificare la presenza di uno spazio
 
+	printf("___________SENZA STRING.H__________\n");
 	//Ciclo per inizializzare il primo array
 	for (int i = 0; i < MAX + 1; i++) {		
 		if (i == MAX) {
@@ -96,6 +99,7 @@ int main() {
 		}
 	}
 
+	int carSaltati = 0; //Contatore per memorizzare i caratteri che non vengono momentaneamente inseriti
 	//Ciclo di controllo per la sostituzione con *
 	for (int ip1 = 0; ip1 <= iFineParola1; ip1++) {
 		if (p1[ip1] == p2[ip2]) {    //Se i due caratteri sono uguali
@@ -103,14 +107,25 @@ int main() {
 				tmp[itmp] = '*';  //Se è finita sostituisce con *
 				++itmp; //Inctrementa l'indice per lo scorrimento dell'array
 				ip2 = 0; //Azzera l'indice di scorrimento della seconda parola
+				carSaltati = 0; //Azzera il contatore dei caratteri saltati
 			}
 			else {
 				++ip2; //Altrimenti incrementa l'indice per lo scorrimento della seconda parola
+				++carSaltati; //Incrementa il contatore dei caratteri saltati
 			}		
 		}
 		else { //Se i due caratteri sono diversi
-			tmp[itmp] = p1[ip1]; //Inserisce il carattere nel vettore temporaneo
-			++itmp; //Inctrementa l'indice per lo scorrimento dell'array
+			if (carSaltati != 0) {  //Se ci sono dei caratteri saltati
+				for (int i = ip1 - carSaltati; i <= ip1; i++) { //Ciclo che prende gli ultimi n caratteri saltati e li inserisce nel vettore
+					tmp[itmp] = p1[i];
+					++itmp;
+				}
+				carSaltati = 0; //Azzera il contatore dei caratteri saltati
+			}
+			else {
+				tmp[itmp] = p1[ip1]; //Inserisce il carattere nel vettore temporaneo
+				++itmp; //Inctrementa l'indice per lo scorrimento dell'array
+			}
 		}
 	}
 	printf("%s   %s\n %s", p1, p2,tmp);
