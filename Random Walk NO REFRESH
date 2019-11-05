@@ -12,10 +12,10 @@
 #define SINISTRA 4
 
 int main() {
-
 	char campo[MAX][MAX]; //Crea la matrice
-	char alfabeto[] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','\0' }; //Array per le lettere dell'alfabeto
-	bool fine = false;
+	char alfabeto[27]; //Array per memorizzare le lettere dell'alfabeto
+	bool fine = false; //Booleano per individuare la fine del gioco
+	bool perso = false; //Booleano per verificare la vittoria o la sconfitta
 	bool casellaLibera = true; //Booleano per la disponibilità della casella
 	int caselleOccupate = 0; //Contatore delle caselle occupate
 	int rndDirezione = 0; //Random per la direzione
@@ -23,12 +23,20 @@ int main() {
 	int direzioniEstratte[] = { 0,0,0 }; //Vettore per la memorizzazione delle direzioni estratte
 	int contEstratti = 0; //Contatore per il vettore dei numeri estratti
 
+	int lettera = 65; //Valore della A nella tabella ASCII
+	for (int i = 0; i <= 26; i++) {
+		if (i == 26) { //All'ultimo elemento inserisce il terminatore
+			alfabeto[i] = '\0';
+			break;
+		}		
+		alfabeto[i] = (char)lettera; //Inserisce la lettera nell'array
+		lettera++;
+	}
+
 	for (int r = 0; r < MAX; r++) { //Cicli per l'inizializzazione
 		for (int c = 0; c < MAX; c++) {
-			campo[r][c] = '-';  //Inizializza il campo
-			printf("|%c|", campo[r][c]); //Printa il carattere
+			campo[r][c] = '.';  //Inizializza il campo
 		}
-		printf("\n");
 	}
 
 	srand(time(NULL)); //Generazione di un seed random con la libreria time
@@ -53,7 +61,7 @@ int main() {
 		switch (rndDirezione)
 		{
 		case SU:
-			if (campo[Riga - 1][Colonna] != '-' || Riga - 1 < 0) { //Controlla che la casella non sia occupata e che non esca dai limiti
+			if (campo[Riga - 1][Colonna] != '.' || Riga - 1 < 0) { //Controlla che la casella non sia occupata e che non esca dai limiti
 				casellaLibera = false;
 				break;
 			}
@@ -63,7 +71,7 @@ int main() {
 			}
 			break;
 		case DESTRA:
-			if (campo[Riga][Colonna + 1] != '-' || Colonna + 1 >= MAX) { //Controlla che la casella non sia occupata e che non esca dai limiti
+			if (campo[Riga][Colonna + 1] != '.' || Colonna + 1 >= MAX) { //Controlla che la casella non sia occupata e che non esca dai limiti
 				casellaLibera = false;
 				break;
 			}
@@ -73,7 +81,7 @@ int main() {
 			}
 			break;
 		case GIU:
-			if (campo[Riga + 1][Colonna] != '-' || Riga + 1 >= MAX) { //Controlla che la casella non sia occupata e che non esca dai limiti
+			if (campo[Riga + 1][Colonna] != '.' || Riga + 1 >= MAX) { //Controlla che la casella non sia occupata e che non esca dai limiti
 				casellaLibera = false;
 				break;
 			}
@@ -83,7 +91,7 @@ int main() {
 			}
 			break;
 		case SINISTRA:
-			if (campo[Riga][Colonna - 1] != '-' || Colonna - 1 < 0) { //Controlla che la casella non sia occupata e che non esca dai limiti
+			if (campo[Riga][Colonna - 1] != '.' || Colonna - 1 < 0) { //Controlla che la casella non sia occupata e che non esca dai limiti
 				casellaLibera = false;
 				break;
 			}
@@ -95,8 +103,11 @@ int main() {
 		}
 		if (!casellaLibera) {
 			++caselleOccupate; //Incrementa il numero di caselle occupate
-			if (caselleOccupate == 4)
+			if (caselleOccupate == 4){
 				fine = true; //Se sono occupate tutte e 4 finisce il gioco
+				perso = true;			
+			}
+				
 			continue; //Continua fino alla fine del ciclo
 		}
 
@@ -109,14 +120,20 @@ int main() {
 		}
 		indiceAlfabeto++; //Incrementa l'indice dell'alfabeto		
 	}
-	printf("\n\n");
+	printf("\n\n\t");
 	//Cicli per il print del campo di gioco
 	for (int r = 0; r < MAX; r++) {
 		for (int c = 0; c < MAX; c++) {
-			printf("|%c|", campo[r][c]); //Printa il carattere
+			printf(" |%c|", campo[r][c]); //Printa il carattere
 		}
-		printf("\n"); //Va a capo alla fine della riga
+		printf("\n\t"); //Va a capo alla fine della riga
+	}
+
+	if (perso == false) {
+		printf("\n\n\t\tSNAKE HA VINTO!"); //In caso di vittoria
+	}
+	else {
+		printf("\n\n\t\tSNAKE HA PERSO!\n\t\tSi e' bloccato alla lettera: %c",alfabeto[indiceAlfabeto-1]); //In caso di sconfitta
 	}
 	getchar();
-	fflush(stdin);
 }
