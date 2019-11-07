@@ -14,7 +14,7 @@ int main() {
 	char c1 = ' ';
 	char c2 = ' ';
 	bool spazio = false; //Variabile per verificare la presenza di uno spazio
-
+	
 	printf("___________SENZA STRING.H__________\n");
 	//Ciclo per inizializzare il primo array
 	for (int i = 0; i < MAX + 1; i++) {		
@@ -22,7 +22,7 @@ int main() {
 			p1[i] = '\0'; //Alla fine degli array aggiunge il terminatore
 		}
 		else {
-			p1[i] = ' '; //Inizializza gli arrayu con degli spazi bianchi
+			p1[i] = ' '; //Inizializza gli array con degli spazi bianchi
 		}
 	}
 	printf("Inserire la prima parola: ");
@@ -146,5 +146,54 @@ int main() {
 			printf("%c", tmp[i]);
 	}
 	
+	//SECONDA VERSIONE CON L'UTILIZZO DI STRING.H
+	printf("\n\n___________CON STRING.H__________\n");
+	char s1[MAX+1];
+	char s2[MAX+1];
+	int lunParola1 = 0;
+	int lunParola2 = 0;
+	int verificaScanf = 0;
+
+	//Setta gli spazi in tutti gli elementi della stringa con la funzione memset
+	memset(s1, ' ', sizeof(char)*MAX); 
+	memset(s2, ' ', sizeof(char)*MAX);
+
+	//Richiede l'inserimento della prima parola
+	printf("Inserire la prima parola: ");
+	scanf("%s", s1);
+	fflush(stdin);
+	lunParola1 = strcspn(s1, " "); //Rileva la lunghezza della prima parola contando tutti i caratteri fino allo spazio
+
+	do {
+		printf("Inserire la seconda parola: ");//Richiede l'inserimento della seconda parola
+		verificaScanf = scanf("%s", s2);
+		fflush(stdin);
+
+		if (verificaScanf == EOF) { //Verifica dei dati letti con scanf
+			printf("ERRORE NELL'INSERIMENTO DEI DATI!");
+			continue;
+		}
+			
+		lunParola2 = strcspn(s2, " "); //Rileva la lunghezza della prima parola	contando tutti i caratteri fino allo spazio	
+		if (lunParola2 > lunParola1)
+			printf("LA SECONDA PAROLA NON PUO' ESSERE PIU' LUNGA DELLA PRIMA!\n"); //In caso in cui la seconda parola sia più lunga della prima
+	} while (lunParola2 > MAX); //Se la lunghezza è errata ripete
+
+	char *returnStrstr; //Puntatore per memorizzare l'indirizzo restituito da strstr
+	char tmpStringh[MAX + 1]; //Array temporaneo
+	do {
+		returnStrstr = strstr(s1, s2); //Trova la prima occorrenza della seconda parola
+		if (returnStrstr == NULL) //Se non la trova esce dal ciclo
+			continue;
+		memset(tmpStringh, '\0', MAX + 1); //Resetta tmp
+		memmove(tmpStringh, s1, returnStrstr - s1); //Inserisco i caratteri saltati da strstr che si trovano prima dell'occorrenza
+		strcat(tmpStringh, "*"); //Inserisco l'asterisco al posto dell'occorrenza
+		strcat(tmpStringh, returnStrstr + lunParola2); //Aggiungo al vettore temporaneo tutti i caratteri della stringa saltando quelli dell'occorrenza
+		memmove(s1, tmpStringh, lunParola1);//S1 acquisiace tutti i caratteri tmp compreso * dell'occorrenza sostituita
+	} while (returnStrstr != NULL); //Continua fintanto che strstr non trova più occorrenze
+
+	printf("Stringa finale: %s", tmpStringh); //Print del risultato
 	getchar();
+	getchar();
+	return 0;
 }
