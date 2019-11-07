@@ -82,7 +82,7 @@ int main(){
     int index2=0; //indice stringa2
     int dimSv=0; //lunghezza della stringa di verifica
     bool occor=false;
-    printf("\n\t\t\tCODICE SENZA UTILIZZARE FUNZIONI DI STRING.H\n");
+    printf("\n________CODICE SENZA STRING.H________\n");
     for (int index=0;index<=dim1;index++){ //CICLO PER OGNI LETTERA DELLA STRIG
         carattere=s1[index]; //Memorizzazione del carattere corrente
         if (carattere==s2[index2]){ //Se il cararttere è uguale
@@ -106,14 +106,14 @@ int main(){
         }
     }
     if (occor==false){ //LA STRINGA TEMPORANEA E' VUOTA QUINDI NON CI SONO OCCORRENZE
-        printf("\n\n\tNON CI SONO OCCORRENZE");
+        printf("\n\tNON CI SONO OCCORRENZE");
     }else{
         printf("\nNUOVA STRINGA: %s\n",nS);
     }
 
 /***************************************** VERSIONE CON L'UTILIZZO DELLA LIBRERIA STRING.H ***********************************************************/
 
-    printf("\n\t\t\tCODICE UTILIZZANDO FUNZIONI DI STRING.H\n");
+    printf("\n\n________CODICE CON STRING.H__________\n");
     char *returnStrstr; //Puntatore per memorizzare l'indirizzo restituito da strstr
 	char tmpString[MAX + 1]; //Array temporaneo
 	int sostituzioni=0;//conta le sostituzioni avvenute nella stringa
