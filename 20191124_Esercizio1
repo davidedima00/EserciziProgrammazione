@@ -1,0 +1,25 @@
+//Author: Filippo Venturini
+//Date(Deadline): 20191124
+//Notes: Esercizio 1
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int main() {
+	int nParole = 0;
+	printf("Quante parole vuoi inserire?: ");
+	scanf("%d", &nParole);
+	fflush(stdin); //Pulizia del buffer
+
+	char *ptrPrincipale = (char*)malloc(nParole * sizeof(char*)); //Alloca dinamicamente uno spazio di memoria pari alle parole da inserire * la dimensione di un puntatore
+	char *ptrStringaCorrente = ptrPrincipale;
+	for (int i = 0; i < nParole; i++) {
+		printf("Inserisci la parola %d: ", i + 1);
+		scanf("%s", ptrStringaCorrente);
+		ptrScorrimento = (char*)malloc(sizeof(*ptrStringaCorrente));
+		ptrScorrimento + 1;
+	}
+																 																														  
+	return 0;
+}
