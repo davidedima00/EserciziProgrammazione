@@ -12,14 +12,26 @@ int main() {
 	scanf("%d", &nParole);
 	fflush(stdin); //Pulizia del buffer
 
-	char *ptrPrincipale = (char*)malloc(nParole * sizeof(char*)); //Alloca dinamicamente uno spazio di memoria pari alle parole da inserire * la dimensione di un puntatore
-	char *ptrStringaCorrente = ptrPrincipale;
+	char **ptrPrincipale = (char*)malloc(nParole * sizeof(char*)); //Alloca dinamicamente uno spazio di memoria pari alle parole da inserire * la dimensione di un puntatore
+	char **ptrScorrimento = ptrPrincipale; //Puntatore per lo scorrimento della memoria
+	char strCorrente[100];
 	for (int i = 0; i < nParole; i++) {
-		printf("Inserisci la parola %d: ", i + 1);
-		scanf("%s", ptrStringaCorrente);
-		ptrScorrimento = (char*)malloc(sizeof(*ptrStringaCorrente));
-		ptrScorrimento + 1;
+		printf("Inserisci la parola %d: ", i + 1); //Richiede l'inserimento della parola
+		scanf("%s", &strCorrente);
+		fflush(stdin);
+		*ptrScorrimento = (char*)malloc(sizeof(strCorrente)); //Alloca dinamicamente uno spazio pari alla dimensione della stringa nell'Heap
+		strcpy(*ptrScorrimento, strCorrente); //Copia il contenuto della variabile temporanea nello spazio allocato
+
+		printf("Indirizzo puntatore: %d, Indirizzo stringa: %d\n", ptrScorrimento, *ptrScorrimento); //Print di controllo
+		ptrScorrimento ++; //Avanza lo scorrimento dei puntatori
 	}
+
+	for (int i = 0; i < nParole; i++) {
+		printf("%s\n", *(ptrPrincipale + i));
+	}
+
+	getchar();
+	getchar();
 																 																														  
 	return 0;
 }
