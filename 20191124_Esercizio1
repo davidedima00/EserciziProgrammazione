@@ -15,21 +15,30 @@ int main() {
 	char **ptrPrincipale = (char*)malloc(nParole * sizeof(char*)); //Alloca dinamicamente uno spazio di memoria pari alle parole da inserire * la dimensione di un puntatore
 	char **ptrScorrimento = ptrPrincipale; //Puntatore per lo scorrimento della memoria
 	char strCorrente[100];
+	memset(strCorrente, "\0", 100);
 	for (int i = 0; i < nParole; i++) {
 		printf("Inserisci la parola %d: ", i + 1); //Richiede l'inserimento della parola
 		scanf("%s", &strCorrente);
 		fflush(stdin);
-		*ptrScorrimento = (char*)malloc(sizeof(strCorrente)); //Alloca dinamicamente uno spazio pari alla dimensione della stringa nell'Heap
+		*ptrScorrimento = (char*)malloc(strlen(strCorrente)); //Alloca dinamicamente uno spazio pari alla dimensione della stringa nell'Heap
 		strcpy(*ptrScorrimento, strCorrente); //Copia il contenuto della variabile temporanea nello spazio allocato
 
 		printf("Indirizzo puntatore: %d, Indirizzo stringa: %d\n", ptrScorrimento, *ptrScorrimento); //Print di controllo
 		ptrScorrimento ++; //Avanza lo scorrimento dei puntatori
 	}
 
-	for (int i = 0; i < nParole; i++) {
-		printf("%s\n", *(ptrPrincipale + i));
-	}
-
+	ptrScorrimento = ptrPrincipale;
+	for (int i = 0; i <= nParole; i++) {
+		if (i == nParole) {
+			printf("\n%d", ptrPrincipale);
+			free(ptrPrincipale); //All'ultima iterazione libera la memoria allocata per il vettore di puntatori
+			break;
+		}
+		printf("%s\n", *(ptrScorrimento));//Printa le stringhe
+		printf("%d", ptrScorrimento);
+		free(*ptrScorrimento); //Libera la memoria allocata per ogni stringa
+		ptrScorrimento++;
+    }
 	getchar();
 	getchar();
 																 																														  
