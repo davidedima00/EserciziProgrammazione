@@ -1,0 +1,141 @@
+/*                                                                                     *
+Author: Davide Di Marco  | Filippo Venturini | Riccardo Leonelli                                                              *
+Date (DeadLine): 10/10/2019                                                            *
+Note: 2 versioni per la ricerca di una sottostringa in una stringa principale.         *
+	  La prima versione è implementata senza l'utilizzo della libreria string.h        *
+	  La seconda versione è implementata con l'utilizzo della libreria string.h        *
+																					   *
+***************************************************************************************/
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h> //Libreria per l'utilizzo dei booleani
+#define MAX 30 //MAX è la lunghezza massima della stringa
+
+int main() {
+	/***************************************** VERSIONE SENZA L'UTILIZZO DELLA LIBRERIA STRING.H ***************************************************/
+	char s1[MAX + 1] = { '\0' }, s2[MAX + 1] = { '\0' };
+	char s3[MAX + 1] = { '\0' }, s4[MAX + 1] = { '\0' }; //s3,s4 servono per la versione con string.h
+
+	int l1 = 0, l2 = 0; //variabili della lunghezza delle stringhe
+	int i = 0, j = 0, c = 0; //indici per scorrere le stringhe. i indice della stringa1, j=indice della stringa2, c=indice della verifica dell'occorrenza
+	int verifica; //verifica dello scanf
+
+	//CHIEDO LA PRIMA PAROLA
+	printf("Inserire la prima parola: ");
+	verifica = scanf("%s", s1);
+	fflush(stdin);
+	if (verifica != 1) {
+		printf("\nErrore: valore inserito errato\n");
+		exit(0);
+	}
+
+	for (l1 = 0; s1[l1] != '\0'; l1++); //ottengo la lunghezza della stringa 1
+	if (l1 > MAX) {
+		printf("\nErrore: la stringa 1 e' troppo lunga");
+		exit(0);
+	}
+
+	//copio il vettore s1 in s3
+	for (int i = 0; i < l1; i++) {
+		s3[i] = s1[i];
+	}
+
+
+	//CHIEDO LA SECONDA PAROLA
+	printf("inserire la seconda parola: ");
+	verifica = scanf("%s", s2);
+	fflush(stdin);
+
+	if(s2[0] == '\n'){
+        printf("%s", s1);
+        exit(0);
+	}
+
+	if (verifica != 1) {
+		printf("\nErrore: valore inserito errato\n");
+		exit(0);
+	}
+
+	for (l2 = 0; s2[l2] != '\0'; l2++); //ottengo la lunghezza della stringa 2
+
+	//condizioni di controllo delle lunghezze delle stringhe
+	if (l2 > l1) {
+		printf("\nErrore: la stringa 2 e' piu\' lunga della stringa 1");
+		exit(0);
+	}
+	if (l2 > MAX) {
+		printf("\nErrore: la stringa 2 e' troppo lunga");
+		exit(0);
+	}
+	/*if (l1 <= l2) {
+		printf("\nErrore: la stringa 2 e' piu' lunga della stringa 1");
+		exit(0);
+	}*/
+
+	//copio il vettore s2 in s4
+	for (int k = 0; k < l2; k++) {
+		s4[k] = s2[k];
+	}
+
+    int s1Mod=false;
+	for (i = 0; i < l1; i++) { //ciclo per ogni lettera della stringa1
+		c = 0; //azzero l'indice per la verifica della presenza della stringa 2 nella stringa 1
+		if (s1[i] == s2[0]) { //se il carattere alla posizione i è uguale al primo carattere della stringa 2
+			for (j = 0; j < l2; j++) { //ciclo per tutta la lunghezza della stringa 2
+				if (s1[i + j] == s2[j]) { //verifico se i caratteri dopo il primo carattere uguale, sono anch'essi uguali al carattere successivo nella stringa 2
+					c++; //incremento di 1 l'indice della stringa di verifica
+				}
+			}
+			if (c == l2) { //se c è prorprio uguale alla lunghezza della stringa2, allora vuol dire che ha trovato l'occorrenza
+				j = 0; // a partire dal primo carattere
+				while (j < l2 - 1) {
+					s1[i + j] = ' '; //aggiungo uno spazio vuoto alla stringa nella posizione dell'occorrenza
+					j++;
+				}
+				s1[i + j] = '*'; //aggiungo l'asterisco
+				s1Mod=true; //Se ho aggiunto l'asterisco vuol dire che ho almeno un'occorrenza
+			}
+		}
+	}
+    printf("\n\n________CODICE SENZA STRING.H__________\n");
+    if (s1Mod==true){ //se la stringa è stata modificata allora la stampo
+        printf("\nNUOVA STRINGA: ");
+        for (j = 0; j < l1; j++) { //stampo tutti i caratteri tranne gli spazi
+            if (s1[j] != ' ') {
+                printf("%c", s1[j]);
+            }
+        }
+    }else{
+        printf("NON CI SONO OCCORRENZE");
+    }
+
+
+
+	/***************************************** VERSIONE CON L'UTILIZZO DELLA LIBRERIA STRING.H ***********************************************************/
+
+	printf("\n\n________CODICE CON STRING.H__________\n");
+	char* returnStrstr; //Puntatore per memorizzare l'indirizzo restituito da strstr
+	char tmpString[MAX + 1]; //Array temporaneo
+	int sostituzioni = 0;//conta le sostituzioni avvenute nella stringa
+	do {
+		returnStrstr = strstr(s3, s4); //Trova la prima occorrenza della seconda parola
+		if (returnStrstr == NULL) { //Se non la trova esce dal ciclo
+			continue;
+		}
+		memset(tmpString, '\0', MAX + 1); //Resetta tmp
+		memmove(tmpString, s3, returnStrstr - s3); //Inserisco i caratteri saltati da strstr che si trovano prima dell'occorrenza
+		strcat(tmpString, "*"); //Inserisco l'asterisco al posto dell'occorrenza
+		strcat(tmpString, returnStrstr + l2); //Aggiungo al vettore temporaneo tutti i caratteri della stringa saltando quelli dell'occorrenza
+		memmove(s3, tmpString, l1); //S1 acquisiace tutti i caratteri tmp compreso * dell'occorrenza sostituita
+		sostituzioni++;
+	} while (returnStrstr != NULL); //Continua fintanto che strstr non trova più occorrenze
+	if (sostituzioni != 0) {
+		printf("\nNUOVA STRINGA: %s", tmpString); //Print del risultato
+	}
+	else {
+		printf("\nNON CI SONO OCCORRENZE");
+	}
+	getchar();
+	return 0;
+}
