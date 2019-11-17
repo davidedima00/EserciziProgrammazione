@@ -1,0 +1,58 @@
+//Author: Filippo Venturini
+//Date(DeadLine): 20191124
+//Notes: Esercizio 2 NUMERI PRIMI
+#include<stdlib.h>
+#include<stdio.h>
+#include <stdbool.h>
+
+int main() {
+	int numInserito = 0; //Numero inserito dall'utente
+	int verificaScanf = 0;
+
+	do {
+		printf("Inserire un numero: ");
+		verificaScanf = scanf("%d", &numInserito);
+		fflush(stdin); //Pulizia buffer
+
+		if (verificaScanf != 1)
+			printf("Valore inserito errato!"); //Messaggio di errore
+	} while (verificaScanf != 1);
+	
+	int numDaMemorizzare = 10;
+	int *ptrNumeriPrimi = malloc(sizeof(int) * numDaMemorizzare); //Alloca dinamicamente uno spazio iniziale per i numeri primi
+	if (ptrNumeriPrimi == NULL) { //In caso la malloc restituisca null
+		printf("MEMORIA INSUFFICENTE PER MEMORIZZARE I NUMERI!");
+		return 0; //Uscita dal programma
+	}
+		
+	int *ptrScorrimento = ptrNumeriPrimi; 
+	int contNumPrimi = 0; //Contatore di numeri primi
+	bool nonPrimo; //Variabile booleana di controllo
+	for (int dividendo = 1; dividendo <= numInserito; dividendo++) { //Ciclo che scorre i dividendi
+		nonPrimo = false; //Setting della variabile booleana di controllo per ogni numero
+		for (int divisore = 1; divisore <= dividendo; divisore++) { //Ciclo che scorre i divisori
+			if ((dividendo%divisore) == 0 && divisore != 1 && dividendo != divisore) {  //Caso in cui un numero abbia un divisore diverso da se stesso e da 1
+				nonPrimo = true;
+				break; //Uscita dal ciclo
+			}
+			if (dividendo == divisore && nonPrimo == false) { //Caso in cui il dividendo e il divisore coincidano e il numero non abbia altri divisori
+				if (contNumPrimi == numDaMemorizzare) { //In caso i numeri primi trovati abbiano riempito la memoria a disposizione
+					numDaMemorizzare *= 2; //Raddoppia lo spazio
+					ptrNumeriPrimi = realloc(ptrNumeriPrimi, sizeof(int)* numDaMemorizzare); //Rialloca la memoria riassegnando al puntatore l'indirizzo 
+					ptrScorrimento = ptrNumeriPrimi + contNumPrimi; //Setta il puntatore di scorrimento all'indirizzo corretto
+				}
+				*ptrScorrimento = dividendo; //Inserimento nell'array
+				ptrScorrimento++; //Incremento del puntatore di scorrimento
+				contNumPrimi++; //Incrementa il contatore dei numeri primi
+			}
+		}	
+	}
+
+	for (int i = 0; i < contNumPrimi; i++) { //Ciclo per la visualizzazione
+		printf("%d\n", *(ptrNumeriPrimi + i));
+	}
+	free(ptrNumeriPrimi); //Deallocazione della memoria riservata ai numeri primi
+	getchar();
+	getchar();
+	return 0;
+}
