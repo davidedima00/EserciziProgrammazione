@@ -20,6 +20,11 @@ int main() {
 	} while (verificaScanf != 1);
 	
 	char **ptrPrincipale = (char**)malloc(nParole * sizeof(char**)); //Alloca dinamicamente uno spazio di memoria pari alle parole da inserire * la dimensione di un puntatore
+	if (ptrPrincipale == NULL) { //Controllo per la malloc
+		printf("MEMORIA INSUFFICENTE!");
+		return 0; //Uscita dal programma
+	}
+
 	char **ptrScorrimento = ptrPrincipale; //Puntatore per lo scorrimento della memoria
 	char strCorrente[100];
 	verificaScanf = 0; //Resetta la variabile per la verifica dello scanf
@@ -33,6 +38,11 @@ int main() {
 		} while (verificaScanf != 1);
 		
 		*ptrScorrimento = (char*)malloc(strlen(strCorrente)+1); //Alloca dinamicamente uno spazio pari alla dimensione della stringa nell'Heap
+		if (ptrScorrimento == NULL) { //Controllo per la malloc
+			printf("MEMORIA INSUFFICENTE!");
+			return 0; //Uscita dal programma
+		}
+
 		strcpy(*ptrScorrimento, strCorrente); //Copia il contenuto della variabile temporanea nello spazio allocato
 
 		if (i != nParole - 1) { //Avanza solo se non punta all'ultimo elemento
