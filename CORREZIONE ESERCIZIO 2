@@ -2,9 +2,9 @@
 Author: Davide Di Marco  | Filippo Venturini | Riccardo Leonelli                                                              *
 Date (DeadLine): 10/10/2019                                                            *
 Note: 2 versioni per la ricerca di una sottostringa in una stringa principale.         *
-	  La prima versione è implementata senza l'utilizzo della libreria string.h        *
-	  La seconda versione è implementata con l'utilizzo della libreria string.h        *
-																					   *
+La prima versione è implementata senza l'utilizzo della libreria string.h        *
+La seconda versione è implementata con l'utilizzo della libreria string.h        *
+*
 ***************************************************************************************/
 #include <stdio.h>
 #include <string.h>
@@ -21,7 +21,7 @@ int main() {
 	int i = 0, j = 0, c = 0; //indici per scorrere le stringhe. i indice della stringa1, j=indice della stringa2, c=indice della verifica dell'occorrenza
 	int verifica; //verifica dello scanf
 
-	//CHIEDO LA PRIMA PAROLA
+				  //CHIEDO LA PRIMA PAROLA
 	printf("Inserire la prima parola: ");
 	verifica = scanf("%s", s1);
 	fflush(stdin);
@@ -43,14 +43,9 @@ int main() {
 
 
 	//CHIEDO LA SECONDA PAROLA
-	printf("inserire la seconda parola: ");
+	printf("Inserire la seconda parola: ");
 	verifica = scanf("%s", s2);
 	fflush(stdin);
-
-	if(s2[0] == '\n'){
-        printf("%s", s1);
-        exit(0);
-	}
 
 	if (verifica != 1) {
 		printf("\nErrore: valore inserito errato\n");
@@ -59,7 +54,7 @@ int main() {
 
 	for (l2 = 0; s2[l2] != '\0'; l2++); //ottengo la lunghezza della stringa 2
 
-	//condizioni di controllo delle lunghezze delle stringhe
+										//condizioni di controllo delle lunghezze delle stringhe
 	if (l2 > l1) {
 		printf("\nErrore: la stringa 2 e' piu\' lunga della stringa 1");
 		exit(0);
@@ -69,8 +64,8 @@ int main() {
 		exit(0);
 	}
 	/*if (l1 <= l2) {
-		printf("\nErrore: la stringa 2 e' piu' lunga della stringa 1");
-		exit(0);
+	printf("\nErrore: la stringa 2 e' piu' lunga della stringa 1");
+	exit(0);
 	}*/
 
 	//copio il vettore s2 in s4
@@ -78,7 +73,7 @@ int main() {
 		s4[k] = s2[k];
 	}
 
-    int s1Mod=false;
+	int s1Mod = false;
 	for (i = 0; i < l1; i++) { //ciclo per ogni lettera della stringa1
 		c = 0; //azzero l'indice per la verifica della presenza della stringa 2 nella stringa 1
 		if (s1[i] == s2[0]) { //se il carattere alla posizione i è uguale al primo carattere della stringa 2
@@ -94,23 +89,22 @@ int main() {
 					j++;
 				}
 				s1[i + j] = '*'; //aggiungo l'asterisco
-				s1Mod=true; //Se ho aggiunto l'asterisco vuol dire che ho almeno un'occorrenza
+				s1Mod = true; //Se ho aggiunto l'asterisco vuol dire che ho almeno un'occorrenza
 			}
 		}
 	}
-    printf("\n\n________CODICE SENZA STRING.H__________\n");
-    if (s1Mod==true){ //se la stringa è stata modificata allora la stampo
-        printf("\nNUOVA STRINGA: ");
-        for (j = 0; j < l1; j++) { //stampo tutti i caratteri tranne gli spazi
-            if (s1[j] != ' ') {
-                printf("%c", s1[j]);
-            }
-        }
-    }else{
-        printf("NON CI SONO OCCORRENZE");
-    }
-
-
+	printf("\n\n________CODICE SENZA STRING.H__________\n");
+	if (s1Mod == true) { //se la stringa è stata modificata allora la stampo
+		printf("\nNUOVA STRINGA: ");
+		for (j = 0; j < l1; j++) { //stampo tutti i caratteri tranne gli spazi
+			if (s1[j] != ' ') {
+				printf("%c", s1[j]);
+			}
+		}
+	}
+	else {
+		printf("NON CI SONO OCCORRENZE");
+	}
 
 	/***************************************** VERSIONE CON L'UTILIZZO DELLA LIBRERIA STRING.H ***********************************************************/
 
@@ -136,6 +130,7 @@ int main() {
 	else {
 		printf("\nNON CI SONO OCCORRENZE");
 	}
+	getchar();
 	getchar();
 	return 0;
 }
