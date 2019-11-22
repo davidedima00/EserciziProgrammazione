@@ -7,22 +7,15 @@
 #include <ctype.h>
 
 int main() {
-	int nParole; //Numero di parole totali
-	int verificaScanf;
+	int nParole = 0;; //Numero di parole totali
+	int verificaScanf = 0;
+	char ch;
+	printf("Quante parole vuoi inserire?: ");
+	while (scanf("%d", &nParole) != 1 || nParole < 1) { //Controllo scanf
+		while ((ch = getchar()) != '\n' && ch != EOF); //Consuma i caratteri nel buffer
+		printf("Valore inserito errato!\nQuante parole vuoi inserire?: ");
+	}
 
-	do {
-		nParole = 0;
-		verificaScanf = 0;
-		printf("Quante parole vuoi inserire?:");
-		verificaScanf = scanf("%d", &nParole);
-		fflush(stdin); //Pulizia del buffer
-
-		if (verificaScanf != 1 || nParole < 1) {
-			printf("Valore inserito errato!\n"); //Messaggio di errore
-		}
-		
-	} while (verificaScanf != 1 || nParole < 1);
-	
 	char **ptrPrincipale = (char**)malloc(nParole * sizeof(char*)); //Alloca dinamicamente uno spazio di memoria pari alle parole da inserire * la dimensione di un puntatore
 	if (ptrPrincipale == NULL) { //Controllo per la malloc
 		printf("MEMORIA INSUFFICENTE!");
