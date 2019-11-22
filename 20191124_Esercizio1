@@ -7,43 +7,53 @@
 #include <ctype.h>
 
 int main() {
-	int nParole = 0; //Numero di parole totali
-	int verificaScanf = 0;
+	int nParole; //Numero di parole totali
+	int verificaScanf;
 
 	do {
-		printf("Quante parole vuoi inserire?: ");
+		nParole = 0;
+		verificaScanf = 0;
+		printf("Quante parole vuoi inserire?:");
 		verificaScanf = scanf("%d", &nParole);
 		fflush(stdin); //Pulizia del buffer
 
-		if (verificaScanf != 1)
-			printf("Valore inserito errato!"); //Messaggio di errore
-	} while (verificaScanf != 1);
+		if (verificaScanf != 1 || nParole < 1) {
+			printf("Valore inserito errato!\n"); //Messaggio di errore
+		}
+		
+	} while (verificaScanf != 1 || nParole < 1);
 	
-	char **ptrPrincipale = (char**)malloc(nParole * sizeof(char**)); //Alloca dinamicamente uno spazio di memoria pari alle parole da inserire * la dimensione di un puntatore
+	char **ptrPrincipale = (char**)malloc(nParole * sizeof(char*)); //Alloca dinamicamente uno spazio di memoria pari alle parole da inserire * la dimensione di un puntatore
 	if (ptrPrincipale == NULL) { //Controllo per la malloc
 		printf("MEMORIA INSUFFICENTE!");
 		return 0; //Uscita dal programma
 	}
-
+	getchar();
 	char **ptrScorrimento = ptrPrincipale; //Puntatore per lo scorrimento della memoria
-	char strCorrente[100];
+	char carattereCorrente;
+	int dimParola = 5;
 	verificaScanf = 0; //Resetta la variabile per la verifica dello scanf
 	for (int i = 0; i < nParole; i++) {
-		do {
-			printf("Inserisci la parola %d: ", i + 1); //Richiede l'inserimento della parola
-			verificaScanf = scanf("%s", &strCorrente);
-			fflush(stdin);//Pulizia del buffer
-			if (verificaScanf != 1)
-				printf("Valore inserito errato!"); //Messaggio di errore
-		} while (verificaScanf != 1);
-		
-		*ptrScorrimento = (char*)malloc(strlen(strCorrente)+1); //Alloca dinamicamente uno spazio pari alla dimensione della stringa nell'Heap
+		int numCaratteri = 0;
+		*ptrScorrimento = (char*)malloc(dimParola+1); //Alloca dinamicamente uno spazio pari alla dimensione della stringa nell'Heap
+		printf("Inserisci la parola %d: ", i + 1); //Richiede l'inserimento della parola
+		while ((carattereCorrente = getchar())!='\n') {
+			if (numCaratteri == dimParola) { //Se la dimensione della parola supera lo spazio disponibile
+				dimParola *= 2; //Raddoppia la dimensione
+				*ptrScorrimento = realloc(*ptrScorrimento, dimParola); //Realloca la memoria con più spazio
+				if (*ptrScorrimento == NULL) { //Controllo per la realloc
+					printf("MEMORIA INSUFFICENTE!");
+					return 0; //Uscita dal programma
+				}
+			}
+			*(*ptrScorrimento + numCaratteri) = carattereCorrente; //Assegna il carattere
+			numCaratteri++;
+		}
+		*(*ptrScorrimento + numCaratteri) = '\0';
 		if (ptrScorrimento == NULL) { //Controllo per la malloc
 			printf("MEMORIA INSUFFICENTE!");
 			return 0; //Uscita dal programma
 		}
-
-		strcpy(*ptrScorrimento, strCorrente); //Copia il contenuto della variabile temporanea nello spazio allocato
 
 		if (i != nParole - 1) { //Avanza solo se non punta all'ultimo elemento
 			ptrScorrimento++; //Avanza lo scorrimento dei puntatori
@@ -60,7 +70,6 @@ int main() {
 		ptrScorrimento++;
 	}
 	free(ptrPrincipale); //Libera tutta la memoria allocata per l'array di puntatori
-	getchar();
 	getchar();
 																 																														  
 	return 0;
