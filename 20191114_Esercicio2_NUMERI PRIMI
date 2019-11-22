@@ -8,15 +8,13 @@
 int main() {
 	int numInserito = 0; //Numero inserito dall'utente
 	int verificaScanf = 0;
+	char ch;
 
-	do {
-		printf("Inserire un numero: ");
-		verificaScanf = scanf("%d", &numInserito);
-		fflush(stdin); //Pulizia buffer
-
-		if (verificaScanf != 1)
-			printf("Valore inserito errato!"); //Messaggio di errore
-	} while (verificaScanf != 1);
+	printf("Inserire un numero: ");
+	while (scanf("%d", &numInserito) != 1 || numInserito <= 1) { //Controllo scanf
+		while ((ch = getchar()) != '\n' && ch != EOF); //Consuma i caratteri nel buffer
+		printf("Valore inserito errato!\nInserire un numero: ");
+	}
 	
 	int numDaMemorizzare = 10;
 	int *ptrNumeriPrimi = malloc(sizeof(int) * numDaMemorizzare); //Alloca dinamicamente uno spazio iniziale per i numeri primi
@@ -39,6 +37,10 @@ int main() {
 				if (contNumPrimi == numDaMemorizzare) { //In caso i numeri primi trovati abbiano riempito la memoria a disposizione
 					numDaMemorizzare *= 2; //Raddoppia lo spazio
 					ptrNumeriPrimi = realloc(ptrNumeriPrimi, sizeof(int)* numDaMemorizzare); //Rialloca la memoria riassegnando al puntatore l'indirizzo 
+					if (ptrNumeriPrimi == NULL) { //In caso la realloc restituisca null
+						printf("MEMORIA INSUFFICENTE PER MEMORIZZARE I NUMERI!");
+						return 0; //Uscita dal programma
+					}
 					ptrScorrimento = ptrNumeriPrimi + contNumPrimi; //Setta il puntatore di scorrimento all'indirizzo corretto
 				}
 				*ptrScorrimento = dividendo; //Inserimento nell'array
@@ -49,7 +51,7 @@ int main() {
 	}
 
 	for (int i = 0; i < contNumPrimi; i++) { //Ciclo per la visualizzazione
-		printf("%d\n", *(ptrNumeriPrimi + i));
+		printf("|%d|\n", *(ptrNumeriPrimi + i));
 	}
 	free(ptrNumeriPrimi); //Deallocazione della memoria riservata ai numeri primi
 	getchar();
