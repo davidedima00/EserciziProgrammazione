@@ -1,0 +1,28 @@
+//Author: Filippo Venturini
+//Date (DeadLine): 20191208
+//Notes: Esercizio 2
+#include <stdio.h>
+#include <stdlib.h>
+
+long int Fattoriale(long int); //Prototipo della funzione
+int contChiamata = 0; //Contatore per le chiamate alla funzione
+long int Fattoriale(long int n) {
+	contChiamata++; //Incrementa il contatore
+	printf("Numero chiamata: %d | Valore di n: %d|\n", contChiamata, n);
+	for (int i = 0; i < contChiamata; i++) { //Ciclo che aggiunge una tabulazione per ogni chiamata alla funzione
+		printf("\t");
+	}
+	if (n <= 1) //Caso base in cui n <= 1
+		return n;
+	return n*Fattoriale(n - 1); //Ricorsione
+}
+int main(){
+	long int nInserito = 0;
+	printf("Inserire un numero: ");
+	scanf("%ld", &nInserito);
+	while (getchar() != '\n'); //Ciclo per pulire il buffer
+
+	printf("\nFattoriale di %ld: %ld",nInserito, Fattoriale(nInserito));
+	getchar();
+	return 0;
+}
