@@ -13,7 +13,7 @@ long int Fattoriale(long int n) {
 		printf("\t");
 	}
 	if (n <= 1) //Caso base in cui n <= 1
-		return n;
+		return 1;
 	return n*Fattoriale(n - 1); //Ricorsione
 }
 int main(){
