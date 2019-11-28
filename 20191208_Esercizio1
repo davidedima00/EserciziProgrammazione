@@ -1,0 +1,24 @@
+//Author: Filippo Venturini	
+//Date(DeadLine): 20191208
+//Notes: Esercizio 1 
+#include <stdio.h>
+#include <stdlib.h>
+#define CIFRE_MATRICOLA 14
+#define MAX_STUDENTI 10
+void AggiungiStudente();
+void StampaInfo(int);
+void ModificaPianoStudi(int);
+int Media();
+struct Studente
+{
+	char numMatricola [CIFRE_MATRICOLA];
+	char nome[10];
+	char cognome[10];
+	int annoImmatricolazione;
+} studenti [MAX_STUDENTI];
+struct Insegnamento {
+
+};
+int main() {
+
+}
