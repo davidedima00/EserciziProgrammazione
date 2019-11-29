@@ -3,22 +3,172 @@
 //Notes: Esercizio 1 
 #include <stdio.h>
 #include <stdlib.h>
-#define CIFRE_MATRICOLA 14
+#include <stdbool.h>
+#include <string.h>
 #define MAX_STUDENTI 10
+#define NUM_ESAMI 5
+#define MAX_INSEGNAMENTI 5
+//Prototipi delle funzioni
 void AggiungiStudente();
 void StampaInfo(int);
 void ModificaPianoStudi(int);
 int Media();
+void InizializzaInsegnamenti();
+
+int contStudenti = 0; //Variabile globale che memorizza il numero di studenti presenti
+int verificaScanf = 0; //Variabile globale per la verifica di tutti gli scanf
+
 struct Studente
 {
-	char numMatricola [CIFRE_MATRICOLA];
+	int numMatricola;
 	char nome[10];
 	char cognome[10];
 	int annoImmatricolazione;
+
+	struct VotiEsami {
+		int codice;
+		int voto;
+	}piano_di_studi [NUM_ESAMI];
+
 } studenti [MAX_STUDENTI];
+
 struct Insegnamento {
+	int codice;
+	char descrizione[100];
+	int anno;
+	int crediti;
+} insegnamenti[MAX_INSEGNAMENTI];
 
-};
+
+//Dichiarazione delle variabili per ogni insegnamento
+void InizializzaInsegnamenti() {
+	insegnamenti[0].codice = 1;
+	strcat(insegnamenti[0].descrizione, "Programmazione");
+	insegnamenti[0].anno = 1;
+	insegnamenti[0].crediti = 12;
+
+	insegnamenti[1].codice = 2;
+	strcat(insegnamenti[1].descrizione, "Analisi");
+	insegnamenti[1].anno = 1;
+	insegnamenti[1].crediti = 12;
+
+	insegnamenti[2].codice = 3;
+	strcat(insegnamenti[2].descrizione, "Algebra_E_Geometria");
+	insegnamenti[2].anno = 1;
+	insegnamenti[2].crediti = 6;
+
+	insegnamenti[3].codice = 4;
+	strcat(insegnamenti[3].descrizione, "Inglese_B1");
+	insegnamenti[3].anno = 1;
+	insegnamenti[3].crediti = 6;
+
+	insegnamenti[4].codice = 5;
+	strcat(insegnamenti[4].descrizione, "Architetture_Degli_Elaboratori");
+	insegnamenti[4].anno = 1;
+	insegnamenti[4].crediti = 12;
+}
+
+void AggiungiStudente(){
+	if (contStudenti == MAX_STUDENTI) { //In caso il vettore sia pieno
+		printf("\nIl vettore è pieno!");
+		return; //Esce dalla funzione
+	}
+	printf("-------------------------\n");
+	printf("AGGIUNGERE STUDENTE :\n");
+	int matricolaInserita = 0;
+	bool presente; //Booleano per la verifica 
+	do {
+		presente = false;
+		printf("\tInserisci il numero di matricola: ");
+		verificaScanf = scanf("%d", &matricolaInserita);
+		while ((getchar()) != '\n'); //Pulizia del buffer
+
+		for (int i = 0; i < contStudenti; i++) { //Ciclo di per controllare che lo studente non sia già presente
+			if (studenti[i].numMatricola == matricolaInserita) {
+				presente = true;
+				printf("\nLo studente è già presente!");
+				break; //Esce dal ciclo
+			}
+		}
+	} while (verificaScanf != 1 || presente);
+	
+	studenti[contStudenti].numMatricola = matricolaInserita; //Assegna il numero di matricola allo studente
+
+	printf("\tInserire il nome: ");
+	scanf("%s", studenti[contStudenti].nome);
+	while ((getchar()) != '\n'); //Pulizia del buffer
+
+	printf("\tInserire il cognome: ");
+	scanf("%s", studenti[contStudenti].cognome);
+	while ((getchar()) != '\n'); //Pulizia del buffer
+
+	printf("\tInserire l'anno di immatricolazione: ");
+	scanf("%d", &(studenti[contStudenti].annoImmatricolazione));
+	while ((getchar()) != '\n'); //Pulizia del buffer
+
+	printf("\tSeleziona 5 esami per il piano di studi, tra quelli disponibili.\n"); //Output di presentazione di tutti gli insegnamenti disponibili
+	for (int k = 0; k < MAX_INSEGNAMENTI; k++) {
+		printf("\t%d) %s.\n", insegnamenti[k].codice, insegnamenti[k].descrizione);
+	}
+
+	int codiceInserito = 0;
+	for (int j = 0; j < NUM_ESAMI; j++) {
+		do {
+			verificaScanf = 0;
+			printf("\tDigita il codice dell'esame %d:", j + 1);
+			verificaScanf = scanf("%d", &codiceInserito); //Inserisce il codice dentro all'elemento j-esimo del piano di studi
+			while ((getchar()) != '\n'); //Pulizia del buffer
+		} while (verificaScanf != 1);
+
+		studenti[contStudenti].piano_di_studi[j].codice = codiceInserito; //Assegna il codice dell'esame al piano di studi dello studente
+	}
+
+	contStudenti++; //Incremente il contatore di inserimento
+	return;
+}
+
+//Funzione per stampare le informazioni relative ad uno studente
+void StampaInfo(int matricola) {
+	printf("-------------------------\n");
+	printf("STAMPARE INFORMAZIONI:\n");
+	for (int i = 0; i < MAX_STUDENTI; i++) { //Ciclo di per controllare che lo studente non sia già presente
+		if (studenti[i].numMatricola == matricola) {
+			printf("Numero matricola: %d\n", studenti[i].numMatricola);
+			printf("Nome: %s\n", studenti[i].nome);
+			printf("Cognome: %s\n", studenti[i].cognome);
+			printf("Anno di immatricolazione: %d\n", studenti[i].annoImmatricolazione);
+			printf("PIANO DI STUDI:\n");
+			for (int j = 0; j < NUM_ESAMI; j++){
+				printf("\tCodice Esame: %d|Voto: %d|\n", studenti[i].piano_di_studi[j].codice, studenti[i].piano_di_studi[j].voto);
+			}
+			return; //Esce dalla funzione
+		}
+	}
+	printf("La matricola non e' presente!");
+	return;
+}
 int main() {
+	InizializzaInsegnamenti();
+	int opzioneScelta = 0; //Memorizaa l'opzione da effetturare
+	int matricolaInserita = 0; //Memorizza la matricola inserita
 
+	printf("|AGGIUNGERE STUDENTE : 1|\n|STAMPARE INFORMAZIONI: 2|\n|MODIFICARE IL PIANO DI STUDI: 3|\n|CALCOLARE LA MEDIA DEI VOTI: 4| ");
+	printf("\nScegliere l'opzione desiterata e digitare il numero corrispondente: ");
+	scanf("%d", &opzioneScelta);
+	while ((getchar()) != '\n'); //Pulizia del buffer
+	switch (opzioneScelta) {
+	case 1 :
+		AggiungiStudente();
+	case 2 :
+		printf("Inserire la matricola di cui stampare le informazioni: ");
+		scanf("%d", &matricolaInserita);
+		while ((getchar()) != '\n'); //Pulizia del buffer
+		StampaInfo(matricolaInserita);
+	}
+	
+	
+	
+	getchar();
+	getchar();
+	return 0;
 }
