@@ -112,13 +112,21 @@ void AggiungiStudente(){
 	}
 
 	int codiceInserito = 0;
+	bool codCorretto; //Variabile per verificare il codice
 	for (int j = 0; j < NUM_ESAMI; j++) {
 		do {
+			codCorretto = false;
 			verificaScanf = 0;
 			printf("\tDigita il codice dell'esame %d:", j + 1);
 			verificaScanf = scanf("%d", &codiceInserito); //Inserisce il codice dentro all'elemento j-esimo del piano di studi
 			while ((getchar()) != '\n'); //Pulizia del buffer
-		} while (verificaScanf != 1);
+			for (int t = 0; t < MAX_INSEGNAMENTI; t++) { //Ciclo che controlla che il codice dell'insegnamento esista
+				if (insegnamenti[t].codice == codiceInserito) {
+					codCorretto = true;
+					break;
+				}
+			}
+		} while (verificaScanf != 1 ||codCorretto == false);
 
 		studenti[contStudenti].piano_di_studi[j].codice = codiceInserito; //Assegna il codice dell'esame al piano di studi dello studente
 	}
@@ -131,15 +139,15 @@ void AggiungiStudente(){
 void StampaInfo(int matricola) {
 	printf("-------------------------\n");
 	printf("STAMPARE INFORMAZIONI:\n");
-	for (int i = 0; i < MAX_STUDENTI; i++) { //Ciclo di per controllare che lo studente non sia già presente
+	for (int i = 0; i < MAX_STUDENTI; i++) { //Ciclo per trovare lo studente corrispondente
 		if (studenti[i].numMatricola == matricola) {
-			printf("Numero matricola: %d\n", studenti[i].numMatricola);
-			printf("Nome: %s\n", studenti[i].nome);
-			printf("Cognome: %s\n", studenti[i].cognome);
-			printf("Anno di immatricolazione: %d\n", studenti[i].annoImmatricolazione);
-			printf("PIANO DI STUDI:\n");
+			printf("\tNumero matricola: %d\n", studenti[i].numMatricola);
+			printf("\tNome: %s\n", studenti[i].nome);
+			printf("\tCognome: %s\n", studenti[i].cognome);
+			printf("\tAnno di immatricolazione: %d\n", studenti[i].annoImmatricolazione);
+			printf("\tPIANO DI STUDI:\n");
 			for (int j = 0; j < NUM_ESAMI; j++){
-				printf("\tCodice Esame: %d|Voto: %d|\n", studenti[i].piano_di_studi[j].codice, studenti[i].piano_di_studi[j].voto);
+				printf("\t\tCodice Esame: %d|Voto: %d|\n", studenti[i].piano_di_studi[j].codice, studenti[i].piano_di_studi[j].voto);
 			}
 			return; //Esce dalla funzione
 		}
@@ -147,28 +155,72 @@ void StampaInfo(int matricola) {
 	printf("La matricola non e' presente!");
 	return;
 }
+
+void ModificaPianoStudi(int matricola) {
+	printf("-------------------------\n");
+	printf("MODIFICARE IL PIANO DI STUDI:\n");
+	int codiceInserito = 0;
+	for (int i = 0; i < MAX_STUDENTI; i++) { //Ciclo per trovare lo studente corrispondente
+		if (studenti[i].numMatricola == matricola) {
+			StampaInfo(matricola); //Visualizza i dati relativi alla matricola di cui si vuole modificare il piano di studi
+			do {
+				verificaScanf = 0;
+				printf("Digitare il codice dell'esame di cui si vuole aggiungere il voto: ");
+				verificaScanf = scanf("%d", &codiceInserito);
+				while ((getchar()) != '\n'); //Pulizia del buffer
+			} while (verificaScanf != 1);
+
+			for (int k = 0; k < NUM_ESAMI; k++){
+				if (studenti[i].piano_di_studi[k].codice == codiceInserito) {	
+					do {
+						verificaScanf = 0;
+						verificaScanf = printf("\tInserire il voto: ");
+						verificaScanf = scanf("%d", &studenti[i].piano_di_studi[k].voto); //Inserisce il voto 
+						while ((getchar()) != '\n'); //Pulizia del buffer
+					} while (verificaScanf != 1);
+					return;//Esce dalla funzione perchè la valutazione è stata modificata
+				}
+			    if (k == NUM_ESAMI - 1) {
+					printf("\tNon e' presente l'esame indicato."); //In caso l'esame indicato non sia presente
+				}
+			}			
+		}
+	}
+	printf("La matricola non e' presente!");
+	return;
+}
 int main() {
 	InizializzaInsegnamenti();
-	int opzioneScelta = 0; //Memorizaa l'opzione da effetturare
-	int matricolaInserita = 0; //Memorizza la matricola inserita
-
-	printf("|AGGIUNGERE STUDENTE : 1|\n|STAMPARE INFORMAZIONI: 2|\n|MODIFICARE IL PIANO DI STUDI: 3|\n|CALCOLARE LA MEDIA DEI VOTI: 4| ");
-	printf("\nScegliere l'opzione desiterata e digitare il numero corrispondente: ");
-	scanf("%d", &opzioneScelta);
-	while ((getchar()) != '\n'); //Pulizia del buffer
-	switch (opzioneScelta) {
-	case 1 :
-		AggiungiStudente();
-	case 2 :
-		printf("Inserire la matricola di cui stampare le informazioni: ");
-		scanf("%d", &matricolaInserita);
+	do {
+		int opzioneScelta = 0; //Memorizza l'opzione da effetturare
+		int matricolaInserita = 0; //Memorizza la matricola inserita
+		printf("-------------------------\n");
+		printf("|AGGIUNGERE STUDENTE : 1|\n|STAMPARE INFORMAZIONI: 2|\n|MODIFICARE IL PIANO DI STUDI: 3|\n|CALCOLARE LA MEDIA DEI VOTI: 4|\n|USCIRE: 5| ");
+		printf("\nOpzione desiderata: ");
+		scanf("%d", &opzioneScelta);
 		while ((getchar()) != '\n'); //Pulizia del buffer
-		StampaInfo(matricolaInserita);
-	}
+		if (opzioneScelta == 5) //Esce dal ciclo
+			return 0; 
+		switch (opzioneScelta) {
+		case 1:
+			AggiungiStudente();
+			break;
+		case 2:
+			printf("\tMatricola: ");
+			scanf("%d", &matricolaInserita);
+			while ((getchar()) != '\n'); //Pulizia del buffer
+			StampaInfo(matricolaInserita);
+			break;
+		case 3:
+			printf("\tMatricola: ");
+			scanf("%d", &matricolaInserita);
+			while ((getchar()) != '\n'); //Pulizia del buffer
+			ModificaPianoStudi(matricolaInserita);
+			break;
+		}
+	} while (true);
 	
 	
-	
-	getchar();
 	getchar();
 	return 0;
 }
