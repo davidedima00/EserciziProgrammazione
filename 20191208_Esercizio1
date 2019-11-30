@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#define MAX_STUDENTI 10
+#define MAX_STUDENTI 5
 #define NUM_ESAMI 5
 #define MAX_INSEGNAMENTI 5
 //Prototipi delle funzioni
@@ -70,7 +70,7 @@ void InizializzaInsegnamenti() {
 
 void AggiungiStudente(){
 	if (contStudenti == MAX_STUDENTI) { //In caso il vettore sia pieno
-		printf("\nIl vettore è pieno!");
+		printf("\n\t__STUDENTI AL COMPLETO__\n");
 		return; //Esce dalla funzione
 	}
 	printf("-------------------------\n");
@@ -79,14 +79,14 @@ void AggiungiStudente(){
 	bool presente; //Booleano per la verifica 
 	do {
 		presente = false;
-		printf("\tInserisci il numero di matricola: ");
+		printf("\n\tInserisci il numero di matricola: ");
 		verificaScanf = scanf("%d", &matricolaInserita);
 		while ((getchar()) != '\n'); //Pulizia del buffer
 
 		for (int i = 0; i < contStudenti; i++) { //Ciclo di per controllare che lo studente non sia già presente
 			if (studenti[i].numMatricola == matricolaInserita) {
 				presente = true;
-				printf("\nLo studente è già presente!");
+				printf("Lo studente e' gia' presente!");
 				break; //Esce dal ciclo
 			}
 		}
@@ -152,20 +152,21 @@ void StampaInfo(int matricola) {
 			return; //Esce dalla funzione
 		}
 	}
-	printf("La matricola non e' presente!");
+	printf("\t__MATRICOLA NON PRESENTE__\n");
 	return;
 }
 
 void ModificaPianoStudi(int matricola) {
 	printf("-------------------------\n");
 	printf("MODIFICARE IL PIANO DI STUDI:\n");
-	int codiceInserito = 0;
+	int codiceInserito = 0; //Variabile per il codice dell'esame
+	int votoInserito = 0; //Variabile per il voto
 	for (int i = 0; i < MAX_STUDENTI; i++) { //Ciclo per trovare lo studente corrispondente
 		if (studenti[i].numMatricola == matricola) {
 			StampaInfo(matricola); //Visualizza i dati relativi alla matricola di cui si vuole modificare il piano di studi
 			do {
 				verificaScanf = 0;
-				printf("Digitare il codice dell'esame di cui si vuole aggiungere il voto: ");
+				printf("Codice dell'esame: ");
 				verificaScanf = scanf("%d", &codiceInserito);
 				while ((getchar()) != '\n'); //Pulizia del buffer
 			} while (verificaScanf != 1);
@@ -174,10 +175,17 @@ void ModificaPianoStudi(int matricola) {
 				if (studenti[i].piano_di_studi[k].codice == codiceInserito) {	
 					do {
 						verificaScanf = 0;
-						verificaScanf = printf("\tInserire il voto: ");
-						verificaScanf = scanf("%d", &studenti[i].piano_di_studi[k].voto); //Inserisce il voto 
+						verificaScanf = printf("\tInserire il voto (31 per la lode): ");
+						verificaScanf = scanf("%d", &votoInserito); //Inserisce il voto 
 						while ((getchar()) != '\n'); //Pulizia del buffer
-					} while (verificaScanf != 1);
+
+						if (votoInserito < 18 || votoInserito > 31) {
+							printf("\t\tVoto inserito errato!\n");
+						}
+					} while (verificaScanf != 1 || votoInserito < 18 || votoInserito > 31);
+
+					studenti[i].piano_di_studi[k].voto = votoInserito; //Inserisce il voto
+					printf("\t\tVOTO INSERITO.\n");
 					return;//Esce dalla funzione perchè la valutazione è stata modificata
 				}
 			    if (k == NUM_ESAMI - 1) {
@@ -186,8 +194,29 @@ void ModificaPianoStudi(int matricola) {
 			}			
 		}
 	}
-	printf("La matricola non e' presente!");
+	printf("\t__MATRICOLA NON PRESENTE__\n");
 	return;
+}
+
+int Media() {
+	int sommaStudente;
+	for (int i = 0; i < contStudenti; i++) {
+		sommaStudente = 0;
+		for (int k = 0; k < NUM_ESAMI; k++) {
+			if (studenti[i].piano_di_studi[k].voto == 0) {
+				k = NUM_ESAMI; //Esce dal ciclo perchè lo studente non ha completato tutti gli esami
+			}
+			else {
+				int creditiEsame = 0;
+				for (int j = 0; j < MAX_INSEGNAMENTI; j++) { //Scorre tutti gli insegnamenti
+					if (studenti[i].piano_di_studi[k].codice == insegnamenti[j].codice) {
+						creditiEsame = insegnamenti[j].crediti; //Memorizza in una variabile i crediti corrispondenti all'insegnamento
+					}
+				}
+				sommaStudente += studenti[i].piano_di_studi[k].voto*creditiEsame; //Aggiunge alla somma il valore pesato del singolo esame
+			}
+		}
+	}
 }
 int main() {
 	InizializzaInsegnamenti();
