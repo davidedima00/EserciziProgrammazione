@@ -7,7 +7,7 @@
 #include <string.h>
 #define MAX_STUDENTI 5
 #define NUM_ESAMI 5
-#define MAX_INSEGNAMENTI 5
+#define MAX_INSEGNAMENTI 10
 //Prototipi delle funzioni
 void AggiungiStudente();
 void StampaInfo(int);
@@ -40,7 +40,7 @@ struct Insegnamento {
 } insegnamenti[MAX_INSEGNAMENTI];
 
 
-//Dichiarazione delle variabili per ogni insegnamento
+//Inizializzazione dell'array di insegnamenti
 void InizializzaInsegnamenti() {
 	insegnamenti[0].codice = 1;
 	strcat(insegnamenti[0].descrizione, "Programmazione");
@@ -66,6 +66,31 @@ void InizializzaInsegnamenti() {
 	strcat(insegnamenti[4].descrizione, "Architetture_Degli_Elaboratori");
 	insegnamenti[4].anno = 1;
 	insegnamenti[4].crediti = 12;
+
+	insegnamenti[5].codice = 6;
+	strcat(insegnamenti[5].descrizione, "Programmazione_Ad_Oggetti");
+	insegnamenti[5].anno = 2;
+	insegnamenti[5].crediti = 12;
+
+	insegnamenti[6].codice = 7;
+	strcat(insegnamenti[6].descrizione, "Sistemi_Operativi");
+	insegnamenti[6].anno = 2;
+	insegnamenti[6].crediti = 12;
+
+	insegnamenti[7].codice = 8;
+	strcat(insegnamenti[7].descrizione, "Fisica");
+	insegnamenti[7].anno = 2;
+	insegnamenti[7].crediti = 6;
+
+	insegnamenti[8].codice = 9;
+	strcat(insegnamenti[8].descrizione, "Basi_Di_Dati");
+	insegnamenti[8].anno = 2;
+	insegnamenti[8].crediti = 12;
+
+	insegnamenti[9].codice = 10;
+	strcat(insegnamenti[9].descrizione, "Metodi_Numerici");
+	insegnamenti[9].anno = 2;
+	insegnamenti[9].crediti = 6;
 }
 
 void AggiungiStudente(){
@@ -94,17 +119,28 @@ void AggiungiStudente(){
 	
 	studenti[contStudenti].numMatricola = matricolaInserita; //Assegna il numero di matricola allo studente
 
-	printf("\tInserire il nome: ");
-	scanf("%s", studenti[contStudenti].nome);
-	while ((getchar()) != '\n'); //Pulizia del buffer
-
-	printf("\tInserire il cognome: ");
-	scanf("%s", studenti[contStudenti].cognome);
-	while ((getchar()) != '\n'); //Pulizia del buffer
-
-	printf("\tInserire l'anno di immatricolazione: ");
-	scanf("%d", &(studenti[contStudenti].annoImmatricolazione));
-	while ((getchar()) != '\n'); //Pulizia del buffer
+	do {
+		verificaScanf = 0;
+		printf("\tInserire il nome: ");
+		verificaScanf = scanf("%s", studenti[contStudenti].nome);
+		while ((getchar()) != '\n'); //Pulizia del buffer
+	} while (verificaScanf != 1);
+	
+	do {
+		verificaScanf = 0;
+		printf("\tInserire il cognome: ");
+		verificaScanf = scanf("%s", studenti[contStudenti].cognome);
+		while ((getchar()) != '\n'); //Pulizia del buffer
+	} while (verificaScanf != 1);
+	
+	int annoInserito = 0;
+	do {
+		verificaScanf = 0;
+		printf("\tInserire l'anno di immatricolazione [1900-2019]: ");
+		verificaScanf = scanf("%d", &(annoInserito));
+		while ((getchar()) != '\n'); //Pulizia del buffer
+	}while(verificaScanf != 1 || annoInserito < 1900 || annoInserito > 2019); //Controlla che l'anno sia inserito entro un range
+	studenti[contStudenti].annoImmatricolazione = annoInserito; //Inserimento dell'anno
 
 	printf("\tSeleziona 5 esami per il piano di studi, tra quelli disponibili.\n"); //Output di presentazione di tutti gli insegnamenti disponibili
 	for (int k = 0; k < MAX_INSEGNAMENTI; k++) {
