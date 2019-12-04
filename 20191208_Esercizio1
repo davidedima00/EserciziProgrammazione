@@ -12,7 +12,7 @@
 void AggiungiStudente();
 void StampaInfo(int);
 void ModificaPianoStudi(int);
-int Media();
+void Media();
 void InizializzaInsegnamenti();
 
 int contStudenti = 0; //Variabile globale che memorizza il numero di studenti presenti
@@ -39,60 +39,60 @@ struct Insegnamento {
 	int crediti;
 } insegnamenti[MAX_INSEGNAMENTI];
 
-
 //Inizializzazione dell'array di insegnamenti
 void InizializzaInsegnamenti() {
-	insegnamenti[0].codice = 1;
+	insegnamenti[0].codice = 819;
 	strcat(insegnamenti[0].descrizione, "Programmazione");
 	insegnamenti[0].anno = 1;
 	insegnamenti[0].crediti = 12;
 
-	insegnamenti[1].codice = 2;
+	insegnamenti[1].codice = 00013;
 	strcat(insegnamenti[1].descrizione, "Analisi");
 	insegnamenti[1].anno = 1;
 	insegnamenti[1].crediti = 12;
 
-	insegnamenti[2].codice = 3;
+	insegnamenti[2].codice = 58414;
 	strcat(insegnamenti[2].descrizione, "Algebra_E_Geometria");
 	insegnamenti[2].anno = 1;
 	insegnamenti[2].crediti = 6;
 
-	insegnamenti[3].codice = 4;
+	insegnamenti[3].codice = 26338;
 	strcat(insegnamenti[3].descrizione, "Inglese_B1");
 	insegnamenti[3].anno = 1;
 	insegnamenti[3].crediti = 6;
 
-	insegnamenti[4].codice = 5;
+	insegnamenti[4].codice = 69731;
 	strcat(insegnamenti[4].descrizione, "Architetture_Degli_Elaboratori");
 	insegnamenti[4].anno = 1;
 	insegnamenti[4].crediti = 12;
 
-	insegnamenti[5].codice = 6;
+	insegnamenti[5].codice = 70219;
 	strcat(insegnamenti[5].descrizione, "Programmazione_Ad_Oggetti");
 	insegnamenti[5].anno = 2;
 	insegnamenti[5].crediti = 12;
 
-	insegnamenti[6].codice = 7;
+	insegnamenti[6].codice = 8574;
 	strcat(insegnamenti[6].descrizione, "Sistemi_Operativi");
 	insegnamenti[6].anno = 2;
 	insegnamenti[6].crediti = 12;
 
-	insegnamenti[7].codice = 8;
+	insegnamenti[7].codice = 00405;
 	strcat(insegnamenti[7].descrizione, "Fisica");
 	insegnamenti[7].anno = 2;
 	insegnamenti[7].crediti = 6;
 
-	insegnamenti[8].codice = 9;
+	insegnamenti[8].codice = 10906;
 	strcat(insegnamenti[8].descrizione, "Basi_Di_Dati");
 	insegnamenti[8].anno = 2;
 	insegnamenti[8].crediti = 12;
 
-	insegnamenti[9].codice = 10;
+	insegnamenti[9].codice = 66736;
 	strcat(insegnamenti[9].descrizione, "Metodi_Numerici");
 	insegnamenti[9].anno = 2;
 	insegnamenti[9].crediti = 6;
 }
 
+//Funzione per l'aggiunta di uno studente
 void AggiungiStudente(){
 	if (contStudenti == MAX_STUDENTI) { //In caso il vettore sia pieno
 		printf("\n\t__STUDENTI AL COMPLETO__\n");
@@ -111,7 +111,7 @@ void AggiungiStudente(){
 		for (int i = 0; i < contStudenti; i++) { //Ciclo di per controllare che lo studente non sia già presente
 			if (studenti[i].numMatricola == matricolaInserita) {
 				presente = true;
-				printf("Lo studente e' gia' presente!");
+				printf("\t\tLo studente e' gia' presente!");
 				break; //Esce dal ciclo
 			}
 		}
@@ -192,6 +192,7 @@ void StampaInfo(int matricola) {
 	return;
 }
 
+//Funzione per la modifica del piano di studi
 void ModificaPianoStudi(int matricola) {
 	printf("-------------------------\n");
 	printf("MODIFICARE IL PIANO DI STUDI:\n");
@@ -234,57 +235,90 @@ void ModificaPianoStudi(int matricola) {
 	return;
 }
 
-int Media() {
-	int sommaStudente;
+void Media() {
+	printf("-------------------------\n");
+	printf("CALCOLARE LA MEDIA DEI VOTI:\n");
+	if (studenti[0].numMatricola == NULL) { //Controlla che la struttura non sia vuota
+		printf("\tNon sono presenti studenti!\n");
+		return; //Esce dalla funzione
+	}
+	int sommaTotale; //Variabile per la somma pesata totale
+	int sommaCrediti; //Somma di tutti i crediti
+	int creditiEsame;
+	bool completo;
 	for (int i = 0; i < contStudenti; i++) {
-		sommaStudente = 0;
-		for (int k = 0; k < NUM_ESAMI; k++) {
+		sommaTotale = 0;
+	    sommaCrediti = 0;
+		completo = true;
+		for (int k = 0; k < NUM_ESAMI && completo == true; k++) {
 			if (studenti[i].piano_di_studi[k].voto == 0) {
-				k = NUM_ESAMI; //Esce dal ciclo perchè lo studente non ha completato tutti gli esami
+				completo = false; //Esce dal ciclo perchè lo studente non ha completato tutti gli esami
 			}
 			else {
-				int creditiEsame = 0;
+				creditiEsame = 0;//Setta i crediti del singolo esame a 0
 				for (int j = 0; j < MAX_INSEGNAMENTI; j++) { //Scorre tutti gli insegnamenti
 					if (studenti[i].piano_di_studi[k].codice == insegnamenti[j].codice) {
 						creditiEsame = insegnamenti[j].crediti; //Memorizza in una variabile i crediti corrispondenti all'insegnamento
+						sommaCrediti += creditiEsame; //Aggiunge i crediti alla somma dei pesi
+						break; //Esce dal ciclo
 					}
 				}
-				sommaStudente += studenti[i].piano_di_studi[k].voto*creditiEsame; //Aggiunge alla somma il valore pesato del singolo esame
+				sommaTotale += studenti[i].piano_di_studi[k].voto*creditiEsame; //Aggiunge alla somma totale il valore pesato del singolo esame
 			}
 		}
+		if (completo) {
+			printf("\tNome: %s |Cognome: %s |Media:%d\n",studenti[i].nome, studenti[i].cognome, sommaTotale / sommaCrediti); //Calcola la media del singolo studente 
+		}
+		else {
+			printf("\tNome: %s |Cognome: %s |\n\t\tPIANO DI STUDI NON COMPLETO!\n", studenti[i].nome, studenti[i].cognome); //In caso lo studente non abbia svolto tutti gli esami
+		}	
 	}
 }
 int main() {
-	InizializzaInsegnamenti();
+	InizializzaInsegnamenti(); //Inizializza tutti gli insegnamenti
 	do {
 		int opzioneScelta = 0; //Memorizza l'opzione da effetturare
 		int matricolaInserita = 0; //Memorizza la matricola inserita
-		printf("-------------------------\n");
-		printf("|AGGIUNGERE STUDENTE : 1|\n|STAMPARE INFORMAZIONI: 2|\n|MODIFICARE IL PIANO DI STUDI: 3|\n|CALCOLARE LA MEDIA DEI VOTI: 4|\n|USCIRE: 5| ");
-		printf("\nOpzione desiderata: ");
-		scanf("%d", &opzioneScelta);
-		while ((getchar()) != '\n'); //Pulizia del buffer
+		do {
+			verificaScanf = 0;
+			printf("-------------------------\n");
+			printf("|AGGIUNGERE STUDENTE : 1|\n|STAMPARE INFORMAZIONI: 2|\n|MODIFICARE IL PIANO DI STUDI: 3|\n|CALCOLARE LA MEDIA DEI VOTI: 4|\n|USCIRE: 5| ");
+			printf("\nOpzione desiderata: ");
+			verificaScanf = scanf("%d", &opzioneScelta);
+			while ((getchar()) != '\n'); //Pulizia del buffer
+		} while (verificaScanf != 1);
+		
 		if (opzioneScelta == 5) //Esce dal ciclo
 			return 0; 
-		switch (opzioneScelta) {
+		switch (opzioneScelta) { //Switch per le varie casistiche
 		case 1:
 			AggiungiStudente();
 			break;
 		case 2:
-			printf("\tMatricola: ");
-			scanf("%d", &matricolaInserita);
-			while ((getchar()) != '\n'); //Pulizia del buffer
-			StampaInfo(matricolaInserita);
+			do {
+				verificaScanf = 0;
+				printf("\tMatricola: ");
+				verificaScanf = scanf("%d", &matricolaInserita);
+				while ((getchar()) != '\n'); //Pulizia del buffer
+			} while (verificaScanf != 1);
+
+			StampaInfo(matricolaInserita); //Invoca la funzione per la stampa delle info
 			break;
 		case 3:
-			printf("\tMatricola: ");
-			scanf("%d", &matricolaInserita);
-			while ((getchar()) != '\n'); //Pulizia del buffer
-			ModificaPianoStudi(matricolaInserita);
+			do {
+				verificaScanf = 0;
+				printf("\tMatricola: ");
+				verificaScanf = scanf("%d", &matricolaInserita);
+				while ((getchar()) != '\n'); //Pulizia del buffer
+			} while (verificaScanf != 1);
+			
+			ModificaPianoStudi(matricolaInserita); //Invoca la funzione per la modifica del piano di studi
+			break;
+		case 4:
+			Media(); //Invoca la funzione per la media
 			break;
 		}
 	} while (true);
-	
 	
 	getchar();
 	return 0;
