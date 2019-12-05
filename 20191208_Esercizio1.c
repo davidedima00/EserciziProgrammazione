@@ -1,6 +1,9 @@
-//Author: Filippo Venturini	
+//Author: Filippo Venturini
 //Date(DeadLine): 20191208
-//Notes: Esercizio 1 
+//Notes: Esercizio 1,
+//       GESTIRE DOPPIO COGNOME,  GETS per acquisire il cognome INVECE DI SCANF, es: DAVIDE DI MARCO, nel programma risulta Davide DI
+//       RIEMPIRE IL VETTORE DI INSEGNAMENTI, NON C0N UNA FUNZIONE, MA DIRETTAMENTE COME SE FOSSE UN VETTORE  
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////                 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -101,7 +104,7 @@ void AggiungiStudente(){
 	printf("-------------------------\n");
 	printf("AGGIUNGERE STUDENTE :\n");
 	int matricolaInserita = 0;
-	bool presente; //Booleano per la verifica 
+	bool presente; //Booleano per la verifica
 	do {
 		presente = false;
 		printf("\n\tInserisci il numero di matricola: ");
@@ -116,7 +119,7 @@ void AggiungiStudente(){
 			}
 		}
 	} while (verificaScanf != 1 || presente);
-	
+
 	studenti[contStudenti].numMatricola = matricolaInserita; //Assegna il numero di matricola allo studente
 
 	do {
@@ -125,14 +128,14 @@ void AggiungiStudente(){
 		verificaScanf = scanf("%s", studenti[contStudenti].nome);
 		while ((getchar()) != '\n'); //Pulizia del buffer
 	} while (verificaScanf != 1);
-	
+
 	do {
 		verificaScanf = 0;
 		printf("\tInserire il cognome: ");
 		verificaScanf = scanf("%s", studenti[contStudenti].cognome);
 		while ((getchar()) != '\n'); //Pulizia del buffer
 	} while (verificaScanf != 1);
-	
+
 	int annoInserito = 0;
 	do {
 		verificaScanf = 0;
@@ -209,11 +212,11 @@ void ModificaPianoStudi(int matricola) {
 			} while (verificaScanf != 1);
 
 			for (int k = 0; k < NUM_ESAMI; k++){
-				if (studenti[i].piano_di_studi[k].codice == codiceInserito) {	
+				if (studenti[i].piano_di_studi[k].codice == codiceInserito) {
 					do {
 						verificaScanf = 0;
 						verificaScanf = printf("\tInserire il voto (31 per la lode): ");
-						verificaScanf = scanf("%d", &votoInserito); //Inserisce il voto 
+						verificaScanf = scanf("%d", &votoInserito); //Inserisce il voto
 						while ((getchar()) != '\n'); //Pulizia del buffer
 
 						if (votoInserito < 18 || votoInserito > 31) {
@@ -228,7 +231,7 @@ void ModificaPianoStudi(int matricola) {
 			    if (k == NUM_ESAMI - 1) {
 					printf("\tNon e' presente l'esame indicato."); //In caso l'esame indicato non sia presente
 				}
-			}			
+			}
 		}
 	}
 	printf("\t__MATRICOLA NON PRESENTE__\n");
@@ -267,11 +270,11 @@ void Media() {
 			}
 		}
 		if (completo) {
-			printf("\tNome: %s |Cognome: %s |Media:%d\n",studenti[i].nome, studenti[i].cognome, sommaTotale / sommaCrediti); //Calcola la media del singolo studente 
+			printf("\tNome: %s |Cognome: %s |Media:%d\n",studenti[i].nome, studenti[i].cognome, sommaTotale / sommaCrediti); //Calcola la media del singolo studente
 		}
 		else {
 			printf("\tNome: %s |Cognome: %s |\n\t\tPIANO DI STUDI NON COMPLETO!\n", studenti[i].nome, studenti[i].cognome); //In caso lo studente non abbia svolto tutti gli esami
-		}	
+		}
 	}
 }
 int main() {
@@ -287,9 +290,9 @@ int main() {
 			verificaScanf = scanf("%d", &opzioneScelta);
 			while ((getchar()) != '\n'); //Pulizia del buffer
 		} while (verificaScanf != 1);
-		
+
 		if (opzioneScelta == 5) //Esce dal ciclo
-			return 0; 
+			return 0;
 		switch (opzioneScelta) { //Switch per le varie casistiche
 		case 1:
 			AggiungiStudente();
@@ -311,7 +314,7 @@ int main() {
 				verificaScanf = scanf("%d", &matricolaInserita);
 				while ((getchar()) != '\n'); //Pulizia del buffer
 			} while (verificaScanf != 1);
-			
+
 			ModificaPianoStudi(matricolaInserita); //Invoca la funzione per la modifica del piano di studi
 			break;
 		case 4:
@@ -319,7 +322,7 @@ int main() {
 			break;
 		}
 	} while (true);
-	
+
 	getchar();
 	return 0;
 }
